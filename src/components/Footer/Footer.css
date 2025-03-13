@@ -1,0 +1,104 @@
+/* Footer General Styles */
+.footer {
+    background-color: #4197f1; /* Updated Theme Color */
+    color: white;
+    padding: 50px 0;
+    font-size: 14px;
+  }
+  
+  .footer a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .footer a:hover {
+    color: #f4b400; /* Yellow hover effect */
+    text-decoration: underline;
+  }
+  
+  /* Footer Logo */
+  .footer-logo {
+    width: 20em;
+    margin-bottom: 15px;
+  }
+  
+  /* Contact Info */
+  .footer-contact p {
+    margin-bottom: 8px;
+  }
+  
+  /* Footer Links */
+  .footer-links ul {
+    padding: 0;
+    list-style: none;
+  }
+  
+  .footer-links ul li {
+    margin-bottom: 8px;
+  }
+  
+  /* Responsive Grid */
+  .footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .footer .col-md-4 {
+    flex: 1;
+    min-width: 280px; /* Ensures better tablet support */
+    margin-bottom: 20px;
+  }
+  
+  /* Call-to-Action Button */
+  .footer .btn-contact {
+    background-color: #ff6b35;
+    color: white;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .footer .btn-contact:hover {
+    background-color: #d95c1a;
+  }
+  
+  /* Responsive Design for Tablets */
+  @media (max-width: 1024px) {
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+    }
+  
+    .footer .row {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .footer .col-md-4 {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .footer .btn-contact {
+      width: 80%;
+      margin-top: 15px;
+    }
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 30px 15px;
+    }
+  
+    .footer .btn-contact {
+      width: 100%;
+    }
+  }
+  

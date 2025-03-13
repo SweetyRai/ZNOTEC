@@ -1,0 +1,97 @@
+.animated-card {
+    width: 30em;
+    height: 20em;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: all 0.4s ease-in-out; /* Smooth transition */
+
+    /* Center content vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers vertically */
+    align-items: center; /* Centers horizontally */
+  }
+  
+  /* .animated-card:hover {
+    transform: scale(1.1);  
+    width: 35em;  
+    height: 25em; 
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); 
+  } */
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Ensures text stays centered */
+    width: 100%;
+    height: 100%;
+  }
+  
+  .icon {
+    font-size: 3rem;  /* Slightly larger for better UI */
+    margin-bottom: 15px;
+  }
+  
+  .card-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+.animated-card {
+    width: 60em;
+    height: 10em;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: all 0.4s ease-in-out; /* Smooth transition */
+  }
+  
+  .animated-card:hover {
+    transform: scale(0.1); 
+    /* width: 35em;  
+    height: 25em;  */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Enhanced shadow effect */
+  }
+  
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    .animated-card {
+        width: 20em;
+        height: 20em;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        opacity: 0;
+        will-change: transform, opacity;
+        transition: all 0.4s ease-in-out; /* Smooth transition */
+      }
+      
+      .animated-card:hover {
+        width: 20em;
+        height: 20em;
+      }
+  }
+  

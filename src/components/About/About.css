@@ -1,0 +1,450 @@
+/* General About Section */
+.about-section {
+    padding: 50px 20px;
+    background-color: #f8f9fa;
+  }
+
+  .about-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .about-section p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .carousel-item img {
+    height: 50em;
+    object-fit: cover;  /* Ensure images cover the container */
+    transition: transform 0.5s ease-in-out; /* Smooth animation for image transitions */
+  }
+  
+  /* Optional: Customize Carousel Caption */
+  .carousel-caption {
+    background: rgba(0, 0, 0, 0.5); /* Dark background for text visibility */
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .carousel-caption h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .carousel-caption p {
+    font-size: 1.1rem;
+  }
+
+  /* Overall container */
+.about-container {
+    padding: 50px 20px;
+  }
+
+  .about-img-title {
+    padding: 10em 0 5em 0;
+    font-size: 20px;
+  }
+  
+  /* Image Styling */
+  .about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin: -100px 0;
+  }
+  
+  /* About Us Box */
+  .about-box {
+    background-color: #ffecea; /* Light pink background */
+    padding: 6em 0;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .about-box h2 {
+    color: #ff3b3b; /* Red heading */
+    font-weight: bold;
+    font-size: 40px;
+  }
+  
+  .about-box p {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  /* Bottom Description */
+  .about-description {
+    font-size: 1.1rem;
+    color: #333;
+    margin: auto;
+  }
+  
+  .about-hero-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    clip-path: polygon(5% 15%, 95% 0%, 100% 90%, 0% 100%);
+
+  }
+
+  /* Image Banner Section */
+.image-banner {
+    width: 100%;
+    height: 100vh; /* Full screen */
+    position: relative;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Fixed Image Styling */
+.fixed-image {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover; /* Ensures full coverage without stretching */
+    position: fixed; /* Keeps the image in place */
+    top: 0;
+    left: 0;
+    z-index: -1; /* Places it behind content */
+}
+
+/* Ensure Content is Scrollable */
+.about-page {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.9); /* Light background for readability */
+    backdrop-filter: blur(5px);
+}
+
+
+.image-banner {
+  background: url('/public//We-Are-Znotec-1-scaled.jpg') no-repeat center center/cover;
+  height: 40em; 
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-attachment: fixed;
+}
+ 
+  .overlay {
+    position: absolute;
+    top: 0%;
+    left: 5%;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 1em 3em;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .contact-text {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .emoji {
+    font-size: 20px;
+  }
+
+  .sap-solution {
+    padding: 40px 0;
+  }
+  
+  .text-section {
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #003366;
+  }
+  
+  .description {
+    font-size: 1rem;
+    color: #446688;
+  }
+  
+  .image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .overlay-box {
+    position: relative;
+    width: 100%;
+    /* max-width: 500px; */
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .solution-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .overlay-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /* transform: translate(-50%, -50%); */
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5em;
+    border-radius: 8px;
+    transition: all 0.5s ease-in;
+  }
+
+  .square-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0%;
+    height: 0%;
+    border: 2px solid white;
+    opacity: 0;
+    transform: translate(-50%, -50%); /* Keep it in the center */
+    transition: width 0.4s ease-in-out, height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.image-section:hover .square-overlay {
+    width: 90%;
+    height: 90%;
+    opacity: 1;
+}
+
+.about-services {
+  margin: 2em 0;
+}
+  
+  
+  /* Hover effect */
+  .overlay-box.hovered .overlay-text {
+    background: rgba(0, 51, 102, 0.5);
+    font-size: 1.7rem;
+    padding: 4em;
+    opacity: 1;
+    /* transform: translate(-50%, -50%) scale(1.1); */
+  }
+  .overlay-text span {
+    font-size: 12px;
+    font-weight: 300;
+    font-style: oblique;
+  }
+
+  .about-service-card {
+    border-radius: 10px;
+    padding: 30px;
+    transition: transform 0.3s ease-in-out;
+    /* min-height: 350px; */
+    height: 30em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .about-service-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .about-service-card i.icon {
+    font-size: 2rem;
+    color: #0d6efd; /* Bootstrap Primary Blue */
+  }
+  
+  .about-service-card p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .about-service-card button {
+    width: fit-content;
+    background: rgba(13, 110, 253, 0.3); /* Bootstrap Primary Blue with 70% opacity */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    /* transition: background 0.3s ease-in-out; */
+    margin: auto;
+  }
+  
+  /* Background image cards */
+  .about-service-card[style*="background-image"] {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    position: relative;
+  }
+  
+  .about-service-card[style*="background-image"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 95%; /* Adjust the height of the effect */
+    background: linear-gradient(to top, rgba(13, 90, 253, 0.6), rgba(13, 90, 253, 0)); /* Gradient from blue to transparent */
+    border-radius: 0 0 10px 10px; /* Rounded corners only at the bottom */
+    /* backdrop-filter: blur(5px); */
+  }
+  
+  .about-service-card[style*="background-image"] * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* --- Mobile and Tablet Specific Adjustments --- */
+  
+  /* For smaller screens (mobile devices) */
+  @media (max-width: 767px) {
+    .about-section h1 {
+      font-size: 2rem;
+    }
+  
+    .about-section p {
+      font-size: 1rem;
+      padding: 0 20px;
+    }
+  
+    .carousel-item img {
+      height: 250px; /* Reduce image height on mobile */
+    }
+  
+    .carousel-caption h3 {
+      font-size: 1.5rem;
+    }
+  
+    .carousel-caption p {
+      font-size: 0.9rem;
+    }
+  
+    /* Optionally, you can make the carousel controls visible on mobile */
+    .carousel-control-prev,
+    .carousel-control-next {
+      display: block;
+    }
+
+    .about-box {
+        padding: 20px;
+      }
+    
+      .about-box h2 {
+        font-size: 1.8rem;
+      }
+    
+      .about-box p,
+      .about-description {
+        font-size: 1rem;
+      }
+    
+      .about-image {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .overlay {
+        top: 5%;
+        left: 2%;
+        font-size: 16px;
+        padding: 8px 15px;
+      }
+
+      .title {
+        font-size: 1.8rem;
+      }
+    
+      .description {
+        font-size: 0.9rem;
+      }
+    
+      .overlay-text {
+        font-size: 1.2rem;
+        padding: 4em 0;
+        border-radius:0 !important; 
+        margin: 0 0.3em;
+      }
+    
+      .overlay-box.hovered .overlay-text {
+        font-size: 1.4rem;
+        padding: 3em;
+      }
+
+      .hero-image {
+        clip-path: polygon(5% 45%, 95% 0%, 100% 90%, 0% 100%);
+    
+      }
+
+      .about-img-title {
+        padding: 5em 0 2em 0;
+      }
+  }
+  
+  /* For tablets (portrait mode and up) */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .about-section h1 {
+      font-size: 2.5rem;
+    }
+  
+    .about-section p {
+      font-size: 1.1rem;
+      padding: 0 20px;
+    }
+  
+    .carousel-item img {
+      height: 350px; /* Slightly reduced image height on tablets */
+    }
+  
+    .carousel-caption h3 {
+      font-size: 1.8rem;
+    }
+  
+    .carousel-caption p {
+      font-size: 1rem;
+    }
+  }
+  
+  /* For larger screens (desktop and above) */
+  @media (min-width: 1024px) {
+    .about-section h1 {
+      font-size: 3rem;
+    }
+  
+    .about-section p {
+      font-size: 1.2rem;
+    }
+  
+    .carousel-caption h3 {
+      font-size: 2rem;
+    }
+  
+    .carousel-caption p {
+      font-size: 1.1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .overlay {
+      top: 0%;
+      left: 0;
+      font-size: 14px;
+      padding: 5px 10px;
+    }
+  }
