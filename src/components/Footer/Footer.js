@@ -38,7 +38,10 @@ const Footer = () => {
               <li><a href="/career">Career</a></li>
               <li><a href="freelancer">For Freelancers</a></li>
             </ul>
-            <Button className="btn-contact">Got a project? Contact us!</Button>
+            <Link to="/contact" style={{ textDecoration: 'none', color: 'white' }}>
+              <Button className="btn-contact">Got a project? Contact us!</Button>
+            </Link>
+            
           </Col>
         </Row>
       </Container>

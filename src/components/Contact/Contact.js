@@ -81,20 +81,7 @@ const Contact = () => {
           </Container>
         </section>
 
-        {/* Animated Line */}
-        <section className="svg-line fade-section">
-          <svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
-            <motion.path
-              d="M0 60 C 150 90, 350 30, 500 60 C 650 90, 850 30, 1000 60 C 1150 90, 1300 30, 1400 60"
-              fill="transparent"
-              stroke="#4197f1"
-              strokeWidth="3"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-            />
-          </svg>
-        </section>
+      
       </div>
     </div>
   );
