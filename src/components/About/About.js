@@ -1,5 +1,6 @@
 import React, {useState } from 'react';
-import { Carousel, Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import './About.css';  // Optional for custom styling
 
 const About = () => {
@@ -45,7 +46,7 @@ const About = () => {
       <Row>
         <Col md={5} className="about-image">
           <img src="/about-team.jpg" alt="Team Working" className="img-fluid rounded" />
-          <div className='about-img-title'>At Znotec, our team is ready to tackle any of your projects</div>
+          <div className='about-img-title'>At ZNOTEC, our team is ready to tackle any of your projects</div>
         </Col>
         <Col md={7} className="about-text">
           <div className="about-box">
@@ -62,7 +63,7 @@ const About = () => {
       <Row className="text-center mt-4">
         <Col>
           <p className="about-description">
-            Znotec GmbH is one of the top firms offering consultancy and other services
+            ZNOTEC GmbH is one of the top firms offering consultancy and other services
             in the field of information technology. Since its inception in 2010, we have
             stood for digital excellence and are a leader in SAP solutions. The company
             has over 10 years of experience providing IT services to large clients. We pride
@@ -77,7 +78,9 @@ const About = () => {
       <section className="about-hero-section">
       <div className="overlay">
         <p className="contact-text">
-          Contact Us Today! <span className="emoji">👉</span>
+          <Link to="/contact" style={{ textDecoration: 'none', color: 'white' }}>
+          Contact Us Today! 
+          </Link>
         </p>
       </div>
       <img

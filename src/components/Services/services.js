@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 //   },
 //   {
 //     title: 'system administration',
-//     description: 'System Administration at Znotec GmbH ensures secure, efficient, and scalable IT infrastructure with expert management of servers, networks, and cloud solutions.',
+//     description: 'System Administration at ZNOTEC GmbH ensures secure, efficient, and scalable IT infrastructure with expert management of servers, networks, and cloud solutions.',
 //     image: '/microsoft.png', // Replace with actual image URL
 //     link: '/microsoft-dynamics-365'
 //   },
@@ -57,50 +57,50 @@ import { motion } from "framer-motion";
 const services = [
   {
     title: 'SAP Managed Services',
-    description: 'Znotec provides end-to-end SAP Managed Services, ensuring high availability, security, and scalability for your SAP landscape. Our experts handle system monitoring, upgrades, performance optimization, and compliance, allowing your organization to focus on business growth while we ensure a stable and efficient SAP environment.',
-    image: 'sap.png', // Replace with actual image URL
+    description: 'ZNOTEC provides end-to-end SAP Managed Services, ensuring high availability, security, and scalability for your SAP landscape. Our experts handle system monitoring, upgrades, performance optimization, and compliance, allowing your organization to focus on business growth while we ensure a stable and efficient SAP environment.',
+    image: 'IT_consultant.jpg', // Replace with actual image URL
     link: '/sap-managed-services'
   },
   {
     title: 'SAP HANA Training',
-    description: 'Empower your workforce with professional SAP HANA training from Znotec. Our expert-led sessions cover in-memory computing, real-time analytics, and advanced database functionalities. Gain hands-on experience and certification to enhance business decision-making and optimize operations using SAP HANA’s cutting-edge features.',
-    image: '/SAP-HANA.png', // Replace with actual image URL
+    description: 'Empower your workforce with professional SAP HANA training from ZNOTEC. Our expert-led sessions cover in-memory computing, real-time analytics, and advanced database functionalities. Gain hands-on experience and certification to enhance business decision-making and optimize operations using SAP HANA’s cutting-edge features.',
+    image: '/sap_hana.jpeg', // Replace with actual image URL
     link: '/sap-hana-training'
   },
   {
     title: 'System Administration',
     description: 'Our System Administration services ensure seamless IT infrastructure management with 24/7 monitoring, security patching, and performance optimization. We specialize in server management, cloud computing, disaster recovery, and networking solutions, ensuring business continuity and operational efficiency.',
-    image: '/microsoft.png', // Replace with actual image URL
+    image: '/system_admin.jpg', // Replace with actual image URL
     link: '/microsoft-dynamics-365'
   },
   {
     title: 'Enterprise Resource Planning',
-    description: 'Znotec’s ERP solutions integrate finance, HR, supply chain, and operations into a unified system, improving business efficiency. With our SAP ERP implementation, businesses can automate workflows, enhance inventory management, and streamline customer interactions, leading to increased productivity and cost savings.',
-    image: '/erp.png', // Replace with actual image URL
+    description: 'ZNOTEC’s ERP solutions integrate finance, HR, supply chain, and operations into a unified system, improving business efficiency. With our SAP ERP implementation, businesses can automate workflows, enhance inventory management, and streamline customer interactions, leading to increased productivity and cost savings.',
+    image: '/erp.jpg', // Replace with actual image URL
     link: '/enterprise-resource-planning'
   },
   {
     title: 'Cloud Computing',
-    description: 'Modernize your IT infrastructure with Znotec’s cloud computing solutions. From hybrid cloud strategies to scalable storage and secure backups, we provide tailored cloud services, including AWS, Azure, and SAP Cloud Platform, ensuring seamless data access, enhanced collaboration, and cost-effective IT management.',
-    image: '/cloud.png', // Replace with actual image URL
+    description: 'Modernize your IT infrastructure with ZNOTEC’s cloud computing solutions. From hybrid cloud strategies to scalable storage and secure backups, we provide tailored cloud services, including AWS, Azure, and SAP Cloud Platform, ensuring seamless data access, enhanced collaboration, and cost-effective IT management.',
+    image: '/cloud_computing.jpg', // Replace with actual image URL
     link: '/cloud-computing'
   },
   {
     title: 'Training & Professional Development',
     description: 'Upskill your workforce with our industry-focused training programs in SAP, IT, data analytics, and cloud computing. Our expert-led training courses equip professionals with hands-on experience, real-world case studies, and certification opportunities, helping them stay ahead in today’s digital economy.',
-    image: 'training.png', // Replace with actual image URL
+    image: 'training.jpg', // Replace with actual image URL
     link: '/training'
   },
   {
     title: 'IT Consulting',
-    description: 'Optimize your IT strategy with Znotec’s expert IT consulting services. We analyze your business needs and provide custom solutions in digital transformation, cybersecurity, cloud migration, and IT infrastructure optimization, ensuring efficiency, cost reduction, and technological innovation.',
-    image: '/it_consulting.png', // Replace with actual image URL
+    description: 'Optimize your IT strategy with ZNOTEC’s expert IT consulting services. We analyze your business needs and provide custom solutions in digital transformation, cybersecurity, cloud migration, and IT infrastructure optimization, ensuring efficiency, cost reduction, and technological innovation.',
+    image: '/IT_consulting.jpg', // Replace with actual image URL
     link: '/it-consulting'
   },
   {
     title: 'Website & Digital Solutions',
     description: 'Elevate your online presence with our custom website development services. We create high-performance, responsive, and visually stunning websites, integrating the latest UI/UX design principles, SEO optimization, and advanced e-commerce functionalities to help your business thrive in the digital world.',
-    image: '/website.png', // Replace with actual image URL
+    image: '/website.jpg', // Replace with actual image URL
     link: '/website-development'
   }
 ];
@@ -114,7 +114,7 @@ const Services = () => {
           <h1 className="hero-title">Seamless <span className='word'>Services</span> for a Digital Future</h1>
         </div>
       </div>
-      <div className="znotec-services">
+      <div className="ZNOTEC-services">
       {/* Section Heading */}
       <Container>
         
@@ -127,7 +127,7 @@ const Services = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: false, amount: 0.5 }} // Ensures animation triggers once when 30% visible
           >
-            <h2 className="section-title">We are a very dedicated team</h2>
+            <h2 className="section-title">Our team is deeply dedicated to delivering results.</h2>
             <p className="section-description">
               <strong>How can we help you?</strong> <br />
               Explore more about our solutions & services. If you have an enquiry 

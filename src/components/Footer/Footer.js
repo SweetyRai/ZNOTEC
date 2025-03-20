@@ -10,7 +10,7 @@ const Footer = () => {
         <Row className="justify-content-center">
           {/* Logo & About Section */}
           <Col md={4} className="text-center text-md-start">
-            <a href="/"><img src="/logo-footer.png" alt="Znotec GmbH" className="footer-logo" /></a>
+            <a href="/"><img src="/logo-footer.png" alt="ZNOTEC GmbH" className="footer-logo" /></a>
             <p>
             With our extensive knowledge of the SAP environment and our demonstrated industry and process expertise in manufacturing / production, logistics, trade, public administration, and social economy, we add value to the global collectiveness and to you our clients.
             </p>
@@ -26,7 +26,7 @@ const Footer = () => {
             <h5>Contact Us</h5>
             <p>Pichelfsdorferstr. 61, 13595 Berlin</p>
             <p>Tel: +493035305602 +493035305604</p>
-            <p>Email: <a href="mailto:info@znotec.com">info@znotec.com</a></p>
+            <p>Email: <a href="mailto:info@ZNOTEC.com">info@ZNOTEC.com</a></p>
           </Col>
 
           {/* Quick Links */}

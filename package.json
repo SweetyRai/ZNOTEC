@@ -1,5 +1,5 @@
 {
-  "name": "znotec",
+  "name": "ZNOTEC",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,7 +12,15 @@
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
+    "react-force-graph": "^1.47.4",
+    "react-force-graph-2d": "^1.27.0",
     "react-router-dom": "^7.1.5",
+    "react-tsparticles": "^2.12.2",
+    "three": "^0.174.0",
+    "tsparticles": "^3.8.1",
+    "tsparticles-engine": "^2.12.0",
+    "tsparticles-preset-links": "^2.12.0",
+    "vanta": "^0.5.24",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

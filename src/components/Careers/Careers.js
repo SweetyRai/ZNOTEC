@@ -131,14 +131,14 @@ function Careers() {
             <div className="col-md-6 mb-4">
             <div className='career-card'>
               <h5 className="fw-semibold">Innovation</h5>
-              <p className="small mb-0">Pushing boundaries to find creative solutions in technology and business.</p>
+              <p className="mb-0">Pushing boundaries to find creative solutions in technology and business.</p>
             </div>
               
             </div>
             <div className="col-md-6 mb-4">
             <div className='career-card'>
               <h5 className="fw-semibold">Diversity</h5>
-              <p className="small mb-0">Embracing different backgrounds and perspectives to enrich our team.</p>
+              <p className="mb-0">Embracing different backgrounds and perspectives to enrich our team.</p>
             </div>
               
             </div>
@@ -149,14 +149,14 @@ function Careers() {
           <div className="col-md-6 mb-4">
             <div className='career-card'>
               <h5 className="fw-semibold">Collaboration</h5>
-              <p className="small mb-0">Working together across teams and geographies to achieve success.</p>
+              <p className="mb-0">Working together across teams and geographies to achieve success.</p>
             </div>
               
             </div>
             <div className="col-md-6 mb-4">
             <div className='career-card'>
               <h5 className="fw-semibold">Growth</h5>
-              <p className="small mb-0">Supporting continuous learning and career development for every employee.</p>
+              <p className="mb-0">Supporting continuous learning and career development for every employee.</p>
             </div>
               
             </div>
@@ -194,25 +194,25 @@ function Careers() {
         <div className="container">
           <h2 className="text-center mb-4">Benefits &amp; Perks</h2>
           <div className="row text-center">
-            <div className="col-md-4 mb-4">
-              <div className="p-4 h-100 benefit card-hover">
-                <h5 className="fw-semibold">Health &amp; Wellness</h5>
-                <p className="text-muted small mb-0">Comprehensive health insurance plans and wellness programs to keep you at your best.</p>
-              </div>
-            </div>
-            <div className="col-md-4 mb-4">
-              <div className="p-4 h-100 benefit card-hover">
-                <h5 className="fw-semibold">Flexible Work</h5>
-                <p className="text-muted small mb-0">Options for remote work and flexible schedules to balance life and career.</p>
-              </div>
-            </div>
-            <div className="col-md-4 mb-4">
-              <div className="p-4 h-100 benefit card-hover">
-                <h5 className="fw-semibold">Learning &amp; Development</h5>
-                <p className="text-muted small mb-0">Continuous learning opportunities, training, and mentorship for career advancement.</p>
-              </div>
+          <div className="col-md-6 mb-4">
+            <div className="p-4 h-100 benefit card-hover">
+              <h5 className="fw-semibold">Flexible Work</h5>
+              <p className="text-muted small mb-0">
+                Options for remote work and flexible schedules to balance life and career.
+              </p>
             </div>
           </div>
+
+          <div className="col-md-6 mb-4">
+            <div className="p-4 h-100 benefit card-hover">
+              <h5 className="fw-semibold">Learning &amp; Development</h5>
+              <p className="text-muted small mb-0">
+                Continuous learning opportunities, training, and mentorship for career advancement.
+              </p>
+            </div>
+          </div>
+        </div>
+
         </div>
       </section>
 

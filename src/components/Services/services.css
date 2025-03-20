@@ -41,7 +41,7 @@
   }
   
   .hero-title {
-    font-size: 10rem;
+    font-size: 8rem;
     font-weight: bold;
     color: #fff;
   }
@@ -57,6 +57,7 @@
     text-transform: uppercase;
     color: #1d3557;
     margin: 5rem 0;
+    z-index: 1;
   }
   
   .service-page-card {
@@ -112,8 +113,11 @@
   align-items: center;
 }
 
-.service-card-front {
-  /* background: white; */
+.service-card-content h3 {
+  z-index: 1;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5em;
 }
 
 .service-card-back {
@@ -144,7 +148,7 @@
   
 
 /* Section Background */
-.znotec-services {
+.ZNOTEC-services {
     padding: 20rem 0 0 0;
     background: #ffffff;
   }
@@ -160,12 +164,13 @@
   }
   
   .service-page-image {
-    width: 50%;
+    width: 100%;
     margin: auto;
     height: 15em;
     object-fit: contain;
     border-radius: 15px;
     transition: transform 0.3s ease-in-out;
+    transform: scale(1.8);
   }
   
   /* Hover Effect */
@@ -249,7 +254,7 @@
       margin: -9em 0;
     }
 
-    .znotec-services {
+    .ZNOTEC-services {
       padding: 12rem 0 0 0;
   }    
 
@@ -277,7 +282,7 @@
       font-size: 3rem;
     }
 
-    .znotec-services {
+    .ZNOTEC-services {
       padding: 12rem 0 0 0;
   }
   

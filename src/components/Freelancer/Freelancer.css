@@ -115,7 +115,7 @@
   }
   
   .freelance-hero-title {
-    font-size: 10rem;
+    font-size: 8rem;
     font-weight: bold;
     color: #fff;
   }
@@ -202,6 +202,116 @@
 /* Smooth Scaling & Tilt on Hover */
 .project-card:hover {
     transform: translateY(-15px) scale(1.05) rotateX(4deg) rotateY(-4deg);
+}
+
+/* Job Card Structure */
+
+.job-card {
+  transition: all 0.4s ease;
+  padding: 20px;
+  border-radius: 8px;
+  background: #f2f2f2;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.job-card.expanded {
+  background: #f9f9f9;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+
+.learn-more {
+  color: #007bff; /* Blue color */
+  text-decoration: none !important; 
+  font-size: small;
+  cursor: pointer;
+}
+
+.custom-section {
+  /* background: #1c1c1c; dark background */
+  padding: 60px 0;
+}
+
+.culture-card {
+  background: #a0cbf8;
+  border-radius: 12px;
+  overflow: hidden;
+  color: #fff;
+  
+  /* transition: transform 0.5s ease; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* .culture-card:hover {
+  transform: translateY(-5px);
+} */
+
+.culture-card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.culture-card-body {
+  padding: 20px;
+  /* flex-grow: 1; */
+}
+
+.culture-card-body h4 {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.culture-card-body p {
+  font-size: 0.95rem;
+  color: #000;
+}
+
+
+.learn-more:hover {
+  text-decoration: none !important; /* Ensure no underline on hover */
+}
+
+
+/* Hover Effect */
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Title Section */
+.job-title-wrapper {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.job-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #f45c20;
+}
+
+/* Project Details */
+.start-date {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Description Section */
+.description-col p {
+  font-size: 0.95rem;
+}
+
+/* Button Styling */
+.freelance-job-btn {
+  margin-top: 20px;
+  transition: 0.3s ease-in-out;
+}
+
+.freelance-job-btn:hover {
+  background: #6f42c1;
+  color: white;
 }
 
   

@@ -11,7 +11,7 @@ const B2BPage = () => {
       <section className="b2b-hero">
         <div className="B2B-overlay">
           <h1 className="b2b-hero-title">
-            Unlock Business Success with <span>Znotec</span>
+            Unlock Business Success with <span>ZNOTEC</span>
           </h1>
           <p className="hero-description">
             Transform your business with our B2B solutions for SAP, Cloud, IT Consulting, and Enterprise Resource Planning.
@@ -53,12 +53,12 @@ const B2BPage = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="b2b-testimonials">
+      {/* <section className="b2b-testimonials">
         <Container>
           <h2 className="section-title">What Our Clients Say</h2>
           <Row>
             {[
-              { name: "John Doe", company: "Tech Corp", review: "Znotec transformed our business operations!" },
+              { name: "John Doe", company: "Tech Corp", review: "ZNOTEC transformed our business operations!" },
               { name: "Jane Smith", company: "Finance Co.", review: "The best IT Consulting we've experienced." },
             ].map((testimonial, index) => (
               <Col key={index} md={6}>
@@ -71,7 +71,7 @@ const B2BPage = () => {
             ))}
           </Row>
         </Container>
-      </section>
+      </section> */}
 
       {/* Call to Action */}
       <section className="b2b-cta">

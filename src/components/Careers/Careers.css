@@ -101,13 +101,14 @@
   .culture-section-text {
     font-style: italic;
     font-size: xx-large;
+    color: #fff;
   }
 
   .career-card {
-    background: url('/public/card.jpg') center/cover no-repeat;
-    /* background: white; */
+    /* background: url('/public/card.jpg') center/cover no-repeat; */
+    background: #f2f2f2;
     padding: 20px;
-    height: 10em;
+    height: 8em;
     border: 2px solid #cccccc;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.10);
     /* border-radius: 10px; */
@@ -128,7 +129,9 @@
 
   .culture-section {
     /* background-color: #f2f2f2; */
-    background: url('/public/cards.jpg') center/cover no-repeat;
+    /* background: url('/public/cards.jpg') center/cover no-repeat; */
+    background-color: #4197f1;
+    color: #fff;
   }
 
   .card-hover {

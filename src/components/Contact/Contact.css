@@ -28,7 +28,7 @@
 /* Blurred Container */
 .contact-container {
     width: 80%;
-    background: rgba(255, 255, 255, 0.2); /* Translucent White */
+    background: #e7f2fd; /* Translucent White */
     backdrop-filter: blur(10px); /* Blur Effect */
     -webkit-backdrop-filter: blur(10px); /* Safari Support */
     border-radius: 20px;

@@ -97,17 +97,49 @@
   
   .top-image1{
     border-radius: 10px;
-    width: 100%;
+    width: 60%;
     height: auto;
     position: relative;
     z-index: 1;
   }
 
+  .typing-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid #4197f1;
+    width: fit-content;
+    animation: typing 3s steps(30, end), blink 0.75s step-end infinite;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink {
+    from, to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #4197f1;
+    }
+  }
+  
+
   .top-image2 {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
+    border-radius: 10%;
     object-fit: cover;
+    margin-top: -10em !important;
+    z-index: 1;
+    margin-left: 15em;
   }
 
   .middle-image {
@@ -357,7 +389,7 @@
     background-color: #3177c1; /* Darker shade on hover */
   }
 
-  .znotec-section {
+  .ZNOTEC-section {
     padding: 60px 10%;
     background: #f8f9fa;
     transform: translateX(100%);
@@ -491,6 +523,55 @@
   font-weight: bold;
 }
 
+/* More professional adjustments */
+.top-section.professional {
+  padding: 80px 0;
+  background: #f9f9f9; /* subtle light background */
+}
+
+.top-section.professional .image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.top-section.professional .top-image1 {
+  border-radius: 8px;
+  width: 60%;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.top-section.professional .top-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #d95c1a;
+}
+
+.top-section.professional .top-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.top-section.professional .hero-button {
+  background: #4197f1;
+  border: none;
+  padding: 10px 30px;
+}
+
+.top-section.professional .hero-button:hover {
+  background: #3177c1;
+}
+
+@media (max-width: 768px) {
+  .top-section.professional .image-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
   
   /* Responsive Adjustments */
   @media (max-width: 992px) {
@@ -622,7 +703,7 @@
       display: none;
     }
     
-    .znotec-section {
+    .ZNOTEC-section {
       text-align: center;
       padding: 40px 5%;
     }

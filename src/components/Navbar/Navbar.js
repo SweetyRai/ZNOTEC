@@ -39,7 +39,7 @@ export default function NavigationBar() {
     >
       <Container>
         <Navbar.Brand as={Link} to="/">
-          <img src="/logo.png" alt="Znotec GmbH" className="logo" />
+          <img src="/logo.png" alt="ZNOTEC GmbH" className="logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

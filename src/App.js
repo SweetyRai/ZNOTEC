@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
+
 import {
   BrowserRouter as Router,
   Route,
@@ -18,6 +20,8 @@ import Footer from './components/Footer/Footer';
 import Services from './components/Services/services';
 import Contact from './components/Contact/Contact';
 
+
+
 function App() {
   return (
     <div className="App">
@@ -30,16 +34,15 @@ function App() {
         </svg>
     </div> */}
     <div class="background-shapes">
-        <div class="background-shape background-circle"></div>
+        {/* <div class="background-shape background-circle"></div>
         <div class="background-shape background-circle-1"></div>
         <div class="background-shape background-circle-2"></div>
         <div class="background-shape background-circle-3"></div>
         <div class="background-shape background-circle-4"></div>
-        <div class="background-shape background-circle-5"></div>
-        
+        <div class="background-shape background-circle-5"></div> */}
     </div>
 
-
+   
 
       <Routes>
         <Route path="/" element={<Home />} />

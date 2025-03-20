@@ -65,7 +65,7 @@ const cardData = [
   },
   { 
     id: 9, 
-    title: "Znotec Company", 
+    title: "ZNOTEC Company", 
     icon: "🏢", 
     bgColor: "linear-gradient(to bottom, #e7f2fd, #e7f2fd)", 
     description: "A leading provider of business solutions, specializing in technology-driven innovations and enterprise management."
@@ -141,7 +141,7 @@ const Home = () => {
       </section>
 
 
-      <section className="top-section" ref={topSectionRef}>
+      {/* <section className="top-section" ref={topSectionRef}>
         <Container>
           <Row className="align-items-center">
             <Col md={3}>
@@ -158,7 +158,7 @@ const Home = () => {
               </div>
             </Col>
             <Col md={6} className="text-start">
-              <h1 className="top-title">👋 Hello! We are Znotec.</h1>
+              <h1 className="top-title">👋 Hello! We are ZNOTEC.</h1>
               <p className="top-subtitle">
                 We make SAP solutions faster and less expensive.
               </p>
@@ -170,7 +170,33 @@ const Home = () => {
             </Col>
           </Row>
         </Container>
-      </section>
+      </section> */}
+<section className="top-section professional">
+  <Container>
+    <Row className="align-items-center">
+      <Col md={6}>
+        <div className="image-container">
+          <img src="/z1.jpg" alt="Office setup" className="top-image1" />
+          <img src="/z2.jpg" alt="Workspace" className="top-image2 mt-4" />
+        </div>
+      </Col>
+      <Col md={6} className="text-start">
+        {/* <h1 className="top-title">Hello! We are ZNOTEC.</h1> */}
+        <h1 className="top-title typing-title">Hello! We are ZNOTEC.</h1>
+
+        <p className="top-subtitle">
+          We make SAP solutions faster and less expensive.
+        </p>
+        <Button variant="primary" size="lg" className="hero-button">
+          <Link to="/about" style={{ textDecoration: 'none', color: 'white' }}>
+            Learn more about us
+          </Link>
+        </Button>
+      </Col>
+    </Row>
+  </Container>
+</section>
+
 
       {/* Middle Section */}
       <section className="middle-section" ref={middleSectionRef}>
@@ -186,12 +212,9 @@ const Home = () => {
                 />
                 {/* White Card with Text */}
                 <div className="middle-text-card">
-                  <h2>At Znotec,</h2>
+                  <h2>At ZNOTEC,</h2>
                   <p>
-                    We regard ourselves as close and dependable partners. For our
-                    clients ranging from huge enterprises to medium-sized
-                    businesses, we develop innovative solutions and lasting added
-                    value to their organization.
+                  At ZNOTEC, we pride ourselves on offering our customers worldwide first-class support in all aspects of SAP support. From selecHve technical consulHng to the responsible management of enHre projects, we offer you comprehensive services that are customised to your individual requirements.
                   </p>
                   <Button variant="primary" size="lg" className="hero-button">
                     <Link to="/contact" style={{ textDecoration: 'none', color: 'white' }}>
@@ -223,8 +246,7 @@ const Home = () => {
                 <Card.Body>
                   <Card.Title>SAP</Card.Title>
                   <Card.Text>
-                    We host SAP systems for national and international businesses of
-                    various sizes.
+                  We support and implement various SAP systems
                   </Card.Text>
                   <Button variant="primary" className="service-button">
                   <Link to="/services" style={{ textDecoration: 'none', color: 'white' }}>

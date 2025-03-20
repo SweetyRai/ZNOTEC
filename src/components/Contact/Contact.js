@@ -63,7 +63,7 @@ const Contact = () => {
                   <h5>Quick Contact</h5>
                   <p><strong>Phone:</strong> <a href="tel:+493035305602">+4930 35305602</a></p>
                   <p><a href="tel:+493035305604">+4930 35305604</a></p>
-                  <p><strong>Email:</strong> <a href="mailto:info@znotec.com">info@znotec.com</a></p>
+                  <p><strong>Email:</strong> <a href="mailto:info@ZNOTEC.com">info@ZNOTEC.com</a></p>
                 </motion.div>
               </Col>
 
