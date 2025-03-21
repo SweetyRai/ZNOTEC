@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./Navbar.css"; // Import the CSS file
 import React, { useState, useEffect } from "react";
 
-export default function NavigationBar() {
+export default function NavigationBar({ className }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
 
@@ -34,7 +34,7 @@ export default function NavigationBar() {
   return (
     <Navbar
       expand="lg"
-      className={`navbar-blur custom-navbar ${scrolled ? "scrolled" : ""} ${isMobile ? "bg-light" : ""}`}
+      className={`navbar-blur custom-navbar ${scrolled ? "scrolled" : ""} ${isMobile ? "bg-light" : ""} custom-navbar ${className}` }
       fixed="top"
     >
       <Container>

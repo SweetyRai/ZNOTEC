@@ -391,14 +391,14 @@ const Home = () => {
       </section>
 
       {/* SAP Services Grid Section */}
-      <section className="services-section">
+      {/* <section className="services-section">
         <h2 className="home-section-title">Our Solutions & Services</h2>
         <div className="animate-cards-container">
           {cardData.map((card) => (
             <AnimateCard key={card.id} title={card.title} icon={card.icon} bgColor={card.bgColor} description={card.description}/>
           ))}
         </div>
-      </section>
+      </section> */}
 
       
 

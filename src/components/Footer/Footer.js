@@ -37,7 +37,9 @@ const Footer = () => {
               <li><a href="/services">Services</a></li>
               <li><a href="/b2b">B2B</a></li>
               <li><a href="/career">Career</a></li>
-              <li><a href="freelancer">For Freelancers</a></li>
+              <li><a href="/freelancer">For Freelancers</a></li>
+              <li><a href="/privacy_policy">Pricacy Policy</a></li>
+              <li><a href="/terms_and_consition">Terms & conditions</a></li>
             </ul>
             <Link to="/contact" style={{ textDecoration: 'none', color: 'white' }}>
               <Button className="btn-contact">Got a project? Contact us!</Button>
