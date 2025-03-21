@@ -156,6 +156,18 @@ const Freelancer = () => {
         </Container>
       </section>
 
+      {/* Call to Action */}
+      <section className="freelancer-cta text-center text-white freelance-fade-section">
+        <div className="container">
+          <h2>Start Your Freelancing Journey Today</h2>
+          <Button variant="primary" size="lg" className="hero-button">
+            <Link to="/about" style={{ textDecoration: 'none', color: 'white' }}>
+            Join Now
+            </Link>
+          </Button>
+        </div>
+      </section>
+
     </div>
   );
 };

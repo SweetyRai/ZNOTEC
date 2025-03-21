@@ -197,6 +197,7 @@
     transition: transform 0.6s;
     transform-style: preserve-3d;
     background: rgba(0, 0, 0, 0.3);
+    -webkit-transform-style: preserve-3d; /* Safari Fix */
   }
   
   .flip-card:hover .flip-card-inner {
@@ -212,7 +213,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    
+    -webkit-backface-visibility: hidden; /* Safari Fix */
   }
   
   .flip-card-front {
