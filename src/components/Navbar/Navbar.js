@@ -1,30 +1,35 @@
-import { Navbar, Nav, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import "./Navbar.css"; // Import the CSS file
+import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import "./Navbar.css";
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/userSlice";
 
 export default function NavigationBar({ className }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
-  // Function to change navbar class on scroll
+  // Scroll effect
   const handleScroll = () => {
-    if (window.scrollY > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
+    setScrolled(window.scrollY > 50);
   };
 
-  // Function to check screen size
+  // Responsive effect
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 991);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/sign_in");
   };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
@@ -34,8 +39,8 @@ export default function NavigationBar({ className }) {
   return (
     <Navbar
       expand="lg"
-      className={`navbar-blur custom-navbar ${scrolled ? "scrolled" : ""} ${isMobile ? "bg-light" : ""} custom-navbar ${className}` }
       fixed="top"
+      className={`navbar-blur custom-navbar ${scrolled ? "scrolled" : ""} ${isMobile ? "bg-light" : ""} ${className || ""}`}
     >
       <Container>
         <Navbar.Brand as={Link} to="/">
@@ -50,6 +55,16 @@ export default function NavigationBar({ className }) {
             <Nav.Link as={Link} to="/b2b">B2B</Nav.Link>
             <Nav.Link as={Link} to="/freelancer">Freelancer</Nav.Link>
             <Nav.Link as={Link} to="/contact">Contact Us</Nav.Link>
+
+            {isAuthenticated && user ? (
+              <NavDropdown title={`Hi, ${user.first_name}`} id="user-dropdown">
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <Nav.Link as={Link} to="/sign_in" id="sign_in_nav">Sign In</Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

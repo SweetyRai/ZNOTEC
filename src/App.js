@@ -19,8 +19,10 @@ import Freelancer from './components/Freelancer/Freelancer'
 import Footer from './components/Footer/Footer';
 import Services from './components/Services/services';
 import Contact from './components/Contact/Contact';
+import Dashboard from './components/Dashboard/Dashboard';
 import PrivacyPolicy from './components/PrivacyPolicy/PrivacyPolicy';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
+import RegistrationAndLogin from './components/RegistrationAndLogin/RegistrationAndLogin';
 
 
 
@@ -56,6 +58,8 @@ function App() {
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/privacy_policy' element={<PrivacyPolicy/>}/>
         <Route path='/terms_and_consition' element={<TermsAndConditions/>}/>
+        <Route path='/sign_in' element={<RegistrationAndLogin/>}/>
+        <Route path='/dashboard' element={<Dashboard/>}/>
       </Routes>
       <Footer/>
     </Router>

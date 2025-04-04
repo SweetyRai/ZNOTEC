@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import './Freelancer.css';
 import { motion } from "framer-motion";
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import RegistrationAndLogin from '../RegistrationAndLogin/RegistrationAndLogin';
+
 
 const Freelancer = () => {
   
@@ -167,6 +169,7 @@ const Freelancer = () => {
           </Button>
         </div>
       </section>
+      
 
     </div>
   );

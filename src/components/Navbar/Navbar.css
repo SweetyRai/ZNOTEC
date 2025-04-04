@@ -7,6 +7,21 @@
   transition: all 0.4s ease-in-out;
 }
 
+.user-dropdown, #user-dropdown {
+  color: #d95c1a !important;
+}
+
+#sign_in_nav {
+  width: 5em;
+    text-align: center;
+    background: #d95c1a;
+    color: #fff !important;
+}
+
+#sign_in_nav:hover {
+  color: #fff !important;
+}
+
 /* Navbar with Blur Effect on Scroll for All Pages */
 .custom-navbar.scrolled {
   background-color: rgba(255, 255, 255, 0.8); /* White background after scrolling */
