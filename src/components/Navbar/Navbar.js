@@ -4,6 +4,7 @@ import "./Navbar.css";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/userSlice";
+// import { logoutAdmin } from '../../redux/adminSlice';
 
 export default function NavigationBar({ className }) {
   const [scrolled, setScrolled] = useState(false);
@@ -11,6 +12,8 @@ export default function NavigationBar({ className }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { admin, isAuthenticated: isAdminAuthenticated } = useSelector((state) => state.admin);
+
 
   // Scroll effect
   const handleScroll = () => {
@@ -24,6 +27,8 @@ export default function NavigationBar({ className }) {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    sessionStorage.clear();
+    localStorage.clear(); 
     navigate("/sign_in");
   };
 
@@ -58,13 +63,36 @@ export default function NavigationBar({ className }) {
 
             {isAuthenticated && user ? (
               <NavDropdown title={`Hi, ${user.first_name}`} id="user-dropdown">
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+              <NavDropdown.Item as={Link} to="/dashboard">
+                Dashboard
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
             ) : (
               <Nav.Link as={Link} to="/sign_in" id="sign_in_nav">Sign In</Nav.Link>
             )}
+
+            {/* {isAdminAuthenticated && admin ? (
+              <NavDropdown title={`Hi, ${admin.email}`} id="admin-dropdown">
+                <NavDropdown.Item as={Link} to="/admin-dashboard">Dashboard</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={() => {
+                  dispatch(logoutAdmin());
+                  navigate('/sign_in');
+                }}>Logout</NavDropdown.Item>
+              </NavDropdown>
+            ) : isAuthenticated && user ? (
+              <NavDropdown title={`Hi, ${user.first_name}`} id="user-dropdown">
+                <NavDropdown.Item as={Link} to="/dashboard">Dashboard</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <Nav.Link as={Link} to="/sign_in" id="sign_in_nav">Sign In</Nav.Link>
+            )} */}
           </Nav>
         </Navbar.Collapse>
       </Container>

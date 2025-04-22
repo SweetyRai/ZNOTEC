@@ -1,0 +1,125 @@
+/* AdminAuth.css */
+
+/* General body styling */
+.admin-auth-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(to right, #4197f1, #e7f2fd);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+  }
+  
+  /* Card container */
+  .admin-auth-card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px;
+  }
+  
+  /* Form Title */
+  .admin-auth-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Form groups spacing */
+  .admin-auth-form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Inputs */
+  .admin-auth-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .admin-auth-input:focus {
+    border-color: #4e54c8;
+    outline: none;
+    box-shadow: 0 0 5px rgba(78, 84, 200, 0.4);
+  }
+  
+  /* Buttons */
+  .admin-auth-button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background-color: #d95c1a;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .admin-auth-button:hover {
+    background-color: #d95c1a;
+    color: #fff;
+  }
+  
+  /* Link styling */
+  .admin-auth-switch {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .admin-auth-switch a {
+    color: #4e54c8;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .admin-auth-switch a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Error and Success messages */
+  .admin-auth-error,
+  .admin-auth-success {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .admin-auth-error {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+  
+  .admin-auth-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .admin-auth-card {
+      padding: 30px 20px;
+    }
+  
+    .admin-auth-title {
+      font-size: 24px;
+    }
+  
+    .admin-auth-button {
+      font-size: 15px;
+    }
+  }
+  

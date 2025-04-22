@@ -82,7 +82,20 @@
   .card {
     border-radius: 10px;
   }
+
+  .job-alert-card {
+    margin-top: 5em !important;
+  }
+
+  .dashboard-card {
+    height: 16em !important;
+    padding: 20px;
+  }
   
+  .alert-info {
+    margin-top: 2em;
+  }
+
   .graph-container {
     background: #ffffff;
     padding: 20px;

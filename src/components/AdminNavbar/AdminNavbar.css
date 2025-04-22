@@ -1,0 +1,42 @@
+/* AdminNavbar.css */
+.admin-navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+  }
+  
+  .admin-navbar .navbar-brand img {
+    height: 40px;
+  }
+  
+  .admin-navbar .nav-link,
+  .admin-navbar .dropdown-toggle {
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  
+  .admin-navbar .nav-link:hover,
+  .admin-navbar .dropdown-menu a:hover {
+    color: #007bff;
+  }
+  
+  .admin-navbar .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 150px;
+  }
+  
+  .admin-navbar .btn-outline-primary {
+    font-weight: 500;
+    border-radius: 6px;
+  }
+  
+  @media (max-width: 768px) {
+    .admin-navbar .navbar-collapse {
+      background-color: #f8f9fa;
+      padding: 1rem;
+    }
+  }
+  

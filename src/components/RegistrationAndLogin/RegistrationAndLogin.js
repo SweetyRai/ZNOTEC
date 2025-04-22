@@ -8,6 +8,8 @@ import Navbar from '../Navbar/Navbar';
 import './RegistrationAndLogin.css';
 
 const RegistrationAndLogin = () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+  const ENV_MODE = process.env.REACT_APP_ENV_MODE;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formType, setFormType] = useState('register');
@@ -74,7 +76,7 @@ const RegistrationAndLogin = () => {
 
     if (formType === 'register') {
       try {
-        const res = await fetch('http://localhost:8001/public/api/v0/register', {
+        const res = await fetch(API_URL+'/public/api/v0/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...formData, confirm_password: undefined }),
@@ -96,7 +98,7 @@ const RegistrationAndLogin = () => {
       }
     } else {
       try {
-        const res = await fetch('http://localhost:8001/public/api/v0/login', {
+        const res = await fetch(API_URL+'/public/api/v0/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -107,6 +109,9 @@ const RegistrationAndLogin = () => {
 
         const result = await res.json();
         setLoading(false);
+
+        console.log('login result->', result);
+        
 
         if (res.ok) {
           console.log(result)
