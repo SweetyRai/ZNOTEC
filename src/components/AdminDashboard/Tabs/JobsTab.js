@@ -59,7 +59,7 @@ const JobsTab = () => {
 
   const handleShowApplicants = async () => {
     try {
-      const res = await fetch(+`/api/admin/jobs/${selectedJob._id}/applicants`);
+      const res = await fetch(API_URL+`/api/admin/jobs/${selectedJob._id}/applicants`);
       const data = await res.json();
       setJobApplicants(data);
       setView('applicants');
