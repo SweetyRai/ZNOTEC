@@ -107,6 +107,9 @@ const RegistrationAndLogin = () => {
           }),
         });
 
+        console.log('login response->', res);
+        
+
         const result = await res.json();
         setLoading(false);
 
