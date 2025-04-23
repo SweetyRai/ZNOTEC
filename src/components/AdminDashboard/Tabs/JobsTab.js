@@ -59,7 +59,7 @@ const JobsTab = () => {
 
   const handleShowApplicants = async () => {
     try {
-      const res = await fetch(`http://localhost:8001/api/admin/jobs/${selectedJob._id}/applicants`);
+      const res = await fetch(+`/api/admin/jobs/${selectedJob._id}/applicants`);
       const data = await res.json();
       setJobApplicants(data);
       setView('applicants');
@@ -77,7 +77,7 @@ const JobsTab = () => {
 
   const handleApplicantClick = async (applicantId) => {
     try {
-      const res = await fetch(`http://localhost:8001/api/admin/applicants/${applicantId}`);
+      const res = await fetch(API_URL+`/api/admin/applicants/${applicantId}`);
       const data = await res.json();
       setApplicantDetails(data);
       setView('applicantProfile');
@@ -107,7 +107,7 @@ const JobsTab = () => {
         : 'Unfortunately, You are not selected for next round of interview';
   
     try {
-      const res = await fetch(`http://localhost:8001/private/api/messages/send`, {
+      const res = await fetch(API_URL+`/private/api/messages/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

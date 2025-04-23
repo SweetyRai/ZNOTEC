@@ -18,6 +18,9 @@ const AdminRegistrationAndLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const API_URL = process.env.REACT_APP_API_URL;
+  const ENV_MODE = process.env.REACT_APP_ENV_MODE;
+
   const resetForm = () => {
     setEmail('');
     setPhone('');
@@ -41,7 +44,7 @@ const AdminRegistrationAndLogin = () => {
       : { email, password };
   
     try {
-      const res = await fetch(`http://localhost:8001/public/api/v0${endpoint}`, {
+      const res = await fetch(API_URL+`/public/api/v0${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

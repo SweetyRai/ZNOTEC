@@ -112,7 +112,7 @@ const Dashboard = () => {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch(`http://localhost:8001/api/messages/${user._id}`);
+      const res = await fetch(API_URL+`/api/messages/${user._id}`);
       const data = await res.json();
       if (res.ok) {
         setUnreadCount(data.length - messages.length);
@@ -128,7 +128,7 @@ const Dashboard = () => {
 
   const handleApply = async (jobId) => {
     try {
-      const res = await fetch(`http://localhost:8001/api/apply`, {
+      const res = await fetch(API_URL+`/api/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user._id, jobId })
@@ -151,7 +151,7 @@ const Dashboard = () => {
       if (cv) formData.append('cv', cv);
       if (certificate) formData.append('certificate', certificate);
 
-      const res = await fetch(`http://localhost:8001/private/api/update-profile/${user._id}`, {
+      const res = await fetch(API_URL+`/private/api/update-profile/${user._id}`, {
         method: 'PUT',
         body: formData
       });
