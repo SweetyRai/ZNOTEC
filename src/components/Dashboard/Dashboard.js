@@ -4,7 +4,7 @@ import { setUser } from '../../redux/userSlice';
 import { Badge } from 'react-bootstrap';
 import {
   Container, Row, Col, Nav, Tab, Card, Accordion,
-  Button, Form, Alert, Modal
+  Button, Form, Alert, Modal, ListGroup 
 } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
@@ -19,6 +19,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const Dashboard = () => {
   const [savingProfile, setSavingProfile] = useState(false);
   const [applyingJobId, setApplyingJobId] = useState(null);
+  const [latestJobTitle, setLatestJobTitle] = useState(null);
+  const [jobAlertMessage, setJobAlertMessage] = useState('');
+
 
   const { tab } = useParams();
   const [showDocs, setShowDocs] = useState(null); // 'cv' or 'certificate'
@@ -75,16 +78,16 @@ const Dashboard = () => {
     
     fetchJobs();
     
-    const userInterval = activeTab !== 'profile'
-    ? setInterval(fetchUserByEmail, 90000)
-    : null;
-    // const interval = setInterval(fetchMessages, 90000);
+    // const userInterval = activeTab !== 'profile'
+    // ? setInterval(fetchUserByEmail, 90000)
+    // : null;
+    const interval = setInterval(fetchMessages, 90000);
     if (tab !== activeTab) {
       setActiveTab(tab);
     }
-    return () => clearInterval(userInterval);
+    return () => clearInterval( interval);
     
-  }, [tab, user]);
+  }, []);
   
   
   const fetchUserByEmail = async () => {
@@ -126,21 +129,37 @@ const Dashboard = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch(API_URL+'/public/api/v0/jobs');
+      const res = await fetch(API_URL + '/public/api/v0/jobs');
       const data = await res.json();
-      if (res.ok) setJobs(data);
+      if (res.ok) {
+        setJobs(data);
+  
+        if (data.length > 0) {
+          const latest = data[data.length - 1]; // assuming latest is last
+          setLatestJobTitle(latest.title);
+          setJobAlertMessage(`New job posted: ${latest.title}`);
+        } else {
+          setLatestJobTitle(null);
+          setJobAlertMessage('No new job posted');
+        }
+      }
     } catch (err) {
       console.error('Fetch jobs error:', err);
+      setJobAlertMessage('Error fetching job info.');
     }
   };
+  
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch(API_URL+`/api/messages/${user._id}`);
+      console.log('message calling');
+      
+      const res = await fetch(API_URL+`/private/api/messages/${user._id}`);
       const data = await res.json();
       if (res.ok) {
         setUnreadCount(data.length - messages.length);
         setMessages(data);
+        fetchUserByEmail();
       } else {
         setMessageError(data.message || 'Error loading messages');
       }
@@ -192,7 +211,10 @@ const Dashboard = () => {
       });
 
       const data = await res.json();
-      if (res.ok) alert('Profile updated successfully!');
+      if (res.ok) {
+        fetchUserByEmail();
+        alert('Profile updated successfully!');
+      }
       else alert(data.message || 'Failed to update profile');
     } catch (err) {
       alert('Something went wrong. Try again.');
@@ -252,23 +274,45 @@ const Dashboard = () => {
                   </Col>
                   <Col md={6}>
                     <Card className='dashboard-card'>
+                    <Card.Body>
+                      <h5>Message Notification</h5>
+
+                      {messageError ? (
+                        <Alert variant="danger">{messageError}</Alert>
+                      ) : messages.length === 0 ? (
+                        <Alert variant="info">No new message</Alert>
+                      ) : (
+                        <ListGroup variant="flush">
+                          {messages.slice(0, 5).map((msg, i) => (
+                            <ListGroup.Item key={i}>
+                              <strong>From:</strong> {msg.sender || 'Admin'}<br />
+                              <span>{msg.content}</span>
+                            </ListGroup.Item>
+                          ))}
+                          {messages.length > 5 && (
+                            <Button variant="link" className="mt-2 p-0" onClick={() => handleTabChange('messages')}>
+                              View all messages
+                            </Button>
+                          )}
+                        </ListGroup>
+                      )}
+                    </Card.Body>
+
+                    </Card>
+                    <Card className="mt-3 dashboard-card job-alert-card" onClick={() => handleTabChange('jobs')} style={{ cursor: 'pointer' }}>
                       <Card.Body>
-                        <h5>Message Notification</h5>
-                        {messageError ? (
-                          <Alert variant="danger">{messageError}</Alert>
-                        ) : messages.length === 0 ? (
-                          <Alert variant="info">No new message</Alert>
+                        <h5>New Job Alert</h5>
+                        {latestJobTitle ? (
+                          <p>
+                            <strong>{latestJobTitle}</strong> is now available. Check the "Jobs" tab to apply!
+                          </p>
                         ) : (
-                          <ul>{messages.map((msg, i) => (<li key={i}>{msg.content}</li>))}</ul>
+                          <p>No new job posted</p>
                         )}
                       </Card.Body>
                     </Card>
-                    <Card className="mt-3 dashboard-card job-alert-card">
-                      <Card.Body>
-                        <h5>New Job Alert</h5>
-                        <p>Check the "Jobs" tab to explore opportunities!</p>
-                      </Card.Body>
-                    </Card>
+
+
                   </Col>
                 </Row>
               )}
