@@ -268,7 +268,7 @@ const JobsTab = () => {
           <h6>Experience</h6>
           {applicantDetails.experience.map((exp, idx) => (
             <p key={idx}>
-              {exp.company_name}, {exp.role} ({exp.from} - {exp.to})
+              {exp.company}, {exp.role} ({exp.from} - {exp.to})
             </p>
           ))}
 

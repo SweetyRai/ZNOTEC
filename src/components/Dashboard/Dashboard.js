@@ -17,6 +17,9 @@ import './Dashboard.css';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Dashboard = () => {
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [applyingJobId, setApplyingJobId] = useState(null);
+
   const { tab } = useParams();
   const [showDocs, setShowDocs] = useState(null); // 'cv' or 'certificate'
   const navigate = useNavigate();
@@ -43,29 +46,47 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.qualification?.length) setQualifications(user.qualification);
-      if (user.experience?.length) setExperiences(user.experience);
-      if (user.cv) setCv(user.cv);
-      if (user.certificate) setCertificate(user.certificate);
+      // Qualifications
+      if (user.qualification?.length)
+        setQualifications(JSON.parse(JSON.stringify(user.qualification)));
+  
+      // Experiences
+      if (user.experience?.length)
+        setExperiences(JSON.parse(JSON.stringify(user.experience)));
+  
+      // CV setup
+      if (user.cv && user.cv.data) {
+        setCv(user.cv);
+        const base64CV = `data:${user.cv.contentType};base64,${btoa(
+          new Uint8Array(user.cv.data.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+        )}`;
+        setCvPreviewUrl(base64CV);
+      }
+  
+      // Certificate setup
+      if (user.certificate && user.certificate.data) {
+        setCertificate(user.certificate);
+        const base64Cert = `data:${user.certificate.contentType};base64,${btoa(
+          new Uint8Array(user.certificate.data.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+        )}`;
+        setCertificatePreviewUrl(base64Cert);
+      }
     }
-    // if (user?._id) {
-    //   fetchLatestUser();
-    //   fetchMessages();
-    // }
     
     fetchJobs();
     
-    const userInterval = setInterval(fetchUserByEmail, 5000);
-    const interval = setInterval(fetchMessages, 90000);
+    const userInterval = activeTab !== 'profile'
+    ? setInterval(fetchUserByEmail, 90000)
+    : null;
+    // const interval = setInterval(fetchMessages, 90000);
     if (tab !== activeTab) {
       setActiveTab(tab);
     }
-    return () => clearInterval(userInterval, interval);
+    return () => clearInterval(userInterval);
     
-  }, [tab]);
+  }, [tab, user]);
   
   
-
   const fetchUserByEmail = async () => {
   console.log('email->', user);
   
@@ -77,6 +98,9 @@ const Dashboard = () => {
       });
   
       const data = await res.json();
+
+      console.log('data->', data);
+      
   
       if (res.ok) {
         // You may already have the token in sessionStorage
@@ -128,21 +152,29 @@ const Dashboard = () => {
 
   const handleApply = async (jobId) => {
     try {
+      setApplyingJobId(jobId); // Start loading
       const res = await fetch(API_URL+`/api/apply`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user._id, jobId })
       });
       const data = await res.json();
-      if (res.ok) alert('Successfully applied!');
+      if (res.ok) {
+        alert('Successfully applied!');
+        fetchUserByEmail();
+      }
       else alert(data.message || 'Failed to apply.');
     } catch (err) {
       alert('Something went wrong. Please try again.');
+    }
+    finally {
+      setApplyingJobId(null); // Stop loading
     }
   };
 
   const handleSaveProfile = async () => {
     try {
+      setSavingProfile(true);
       const formData = new FormData();
       formData.append('phone', phone);
       formData.append('role', role);
@@ -150,6 +182,9 @@ const Dashboard = () => {
       formData.append('experience', JSON.stringify(experiences));
       if (cv) formData.append('cv', cv);
       if (certificate) formData.append('certificate', certificate);
+
+      console.log('formData->', formData);
+      
 
       const res = await fetch(API_URL+`/private/api/update-profile/${user._id}`, {
         method: 'PUT',
@@ -161,6 +196,9 @@ const Dashboard = () => {
       else alert(data.message || 'Failed to update profile');
     } catch (err) {
       alert('Something went wrong. Try again.');
+    }
+    finally {
+      setSavingProfile(false); // Stop loading
     }
   };
 
@@ -272,8 +310,20 @@ const Dashboard = () => {
                     You have already applied.
                   </p>
                 ) : (
-                  <Button variant="primary" onClick={() => handleApply(job._id)}>Apply</Button>
+                  <Button
+                    variant="primary"
+                    disabled={applyingJobId === job._id}
+                    onClick={() => handleApply(job._id)}
+                  >
+                    {applyingJobId === job._id ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Applying...
+                      </>
+                    ) : 'Apply'}
+                  </Button>
                 )}
+
               </Accordion.Body>
             </Accordion.Item>
           );
@@ -368,6 +418,11 @@ const Dashboard = () => {
                             }
                           }}
                         />
+                        {cv && (
+                          <div className="mt-2 text-muted">
+                            <small>Selected: {cv.name || 'cv.pdf'}</small>
+                          </div>
+                        )}
                       </Form.Group>
 
                       {cvPreviewUrl && (
@@ -393,6 +448,11 @@ const Dashboard = () => {
                             }
                           }}
                         />
+                        {certificate && (
+                          <div className="mt-2 text-muted">
+                            <small>Selected: {certificate.name || 'certificate.pdf'}</small>
+                          </div>
+                        )}
                       </Form.Group>
 
                       {certificatePreviewUrl && (
@@ -403,9 +463,19 @@ const Dashboard = () => {
                       )}
 
 
-                      <div className="text-center mt-4">
-                        <Button variant="success" onClick={handleSaveProfile}>Save Profile</Button>
-                      </div>
+                    <div className="text-center mt-4">
+                      <Button variant="success" onClick={handleSaveProfile} disabled={savingProfile}>
+                        {savingProfile ? (
+                          <>
+                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />
+                            Saving...
+                          </>
+                        ) : (
+                          'Save Profile'
+                        )}
+                      </Button>
+                    </div>
+
                     </Form>
 
                     <Modal show={!!showDocs} onHide={() => setShowDocs(null)} size="lg">
