@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from '../../redux/userSlice';
+import { setTotalMessages, setNewMessages, resetNewMessages } from '../../redux/notificationSlice';
+import { setMessages, clearNewMessages } from '../../redux/notificationSlice';
 import { Badge } from 'react-bootstrap';
 import {
   Container, Row, Col, Nav, Tab, Card, Accordion,
@@ -21,6 +23,19 @@ const Dashboard = () => {
   const [applyingJobId, setApplyingJobId] = useState(null);
   const [latestJobTitle, setLatestJobTitle] = useState(null);
   const [jobAlertMessage, setJobAlertMessage] = useState('');
+  const [hasViewedMessages, setHasViewedMessages] = useState(false);
+  const [initialMessageCount, setInitialMessageCount] = useState(0);
+  const [messageIdsSeen, setMessageIdsSeen] = useState([]);
+  const [todayJobs, setTodayJobs] = useState([]);
+  const seenMessageIdsRef = useRef([]);
+  const [alertModal, setAlertModal] = useState({
+    show: false,
+    message: ''
+  });
+
+
+
+
 
 
   const { tab } = useParams();
@@ -28,6 +43,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(tab || 'home');
   const { user } = useSelector(state => state.user); 
+  const { totalMessages, newMessages } = useSelector(state => state.notification);
   const [phone, setPhone] = useState(user?.phone || '');
   const [role, setRole] = useState(user?.role);
   const [qualifications, setQualifications] = useState([{ university: '', year: '', course: '' }]);
@@ -48,6 +64,9 @@ const Dashboard = () => {
   const [certificatePreviewUrl, setCertificatePreviewUrl] = useState(null);
 
   useEffect(() => {
+     
+  
+
     if (user) {
       // Qualifications
       if (user.qualification?.length)
@@ -75,17 +94,20 @@ const Dashboard = () => {
         setCertificatePreviewUrl(base64Cert);
       }
     }
+    fetchJobs(); // initial call
+    fetchMessages(); // initial call
     
-    fetchJobs();
+    const jobInterval = setInterval(fetchJobs, 90000);
     
-    // const userInterval = activeTab !== 'profile'
-    // ? setInterval(fetchUserByEmail, 90000)
-    // : null;
-    const interval = setInterval(fetchMessages, 90000);
+    const interval = setInterval(fetchMessages, 80000);
+
+    const profileInterval = setInterval(fetchUserByEmail, 50000);
+
+    
     if (tab !== activeTab) {
       setActiveTab(tab);
     }
-    return () => clearInterval( interval);
+    // return () => clearInterval( interval, jobInterval);
     
   }, []);
   
@@ -123,51 +145,62 @@ const Dashboard = () => {
 
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
-    if (tabName === 'messages') setUnreadCount(0); // reset count on view
     navigate(`/dashboard/${tabName}`);
+
+    if (tabName === 'messages') {
+      dispatch(resetNewMessages());
+    }
+  
+    if (tabName === 'messages') {
+      setHasViewedMessages(true);
+      setUnreadCount(0);
+    }
   };
+  
 
   const fetchJobs = async () => {
     try {
       const res = await fetch(API_URL + '/public/api/v0/jobs');
       const data = await res.json();
+  
       if (res.ok) {
         setJobs(data);
   
-        if (data.length > 0) {
-          const latest = data[data.length - 1]; // assuming latest is last
-          setLatestJobTitle(latest.title);
-          setJobAlertMessage(`New job posted: ${latest.title}`);
-        } else {
-          setLatestJobTitle(null);
-          setJobAlertMessage('No new job posted');
-        }
+        // Filter jobs created today
+        const today = new Date().toDateString();
+        const jobsToday = data.filter(job => {
+          const jobDate = new Date(job.createdAt).toDateString();
+          return jobDate === today;
+        });
+  
+        setTodayJobs(jobsToday);
       }
     } catch (err) {
       console.error('Fetch jobs error:', err);
       setJobAlertMessage('Error fetching job info.');
     }
   };
-  
 
   const fetchMessages = async () => {
     try {
-      console.log('message calling');
-      
-      const res = await fetch(API_URL+`/private/api/messages/${user._id}`);
+      const res = await fetch(`${API_URL}/private/api/messages/${user._id}`);
       const data = await res.json();
+  
       if (res.ok) {
-        setUnreadCount(data.length - messages.length);
         setMessages(data);
-        fetchUserByEmail();
-      } else {
-        setMessageError(data.message || 'Error loading messages');
+  
+        if (totalMessages > 0 && data.length > totalMessages) {
+          dispatch(setNewMessages(data.length - totalMessages));
+        }
+  
+        dispatch(setTotalMessages(data.length));
       }
     } catch (err) {
       console.error('Fetch messages error:', err);
       setMessageError('Server error');
     }
   };
+    
 
   const handleApply = async (jobId) => {
     try {
@@ -179,12 +212,12 @@ const Dashboard = () => {
       });
       const data = await res.json();
       if (res.ok) {
-        alert('Successfully applied!');
+        setAlertModal({ show: true, message: "Successfully applied!" });
         fetchUserByEmail();
       }
-      else alert(data.message || 'Failed to apply.');
+      else setAlertModal({ show: true, message: data.message || 'Failed to apply.' });
     } catch (err) {
-      alert('Something went wrong. Please try again.');
+      setAlertModal({ show: true, message: 'Something went wrong. Please try again.' });
     }
     finally {
       setApplyingJobId(null); // Stop loading
@@ -213,11 +246,11 @@ const Dashboard = () => {
       const data = await res.json();
       if (res.ok) {
         fetchUserByEmail();
-        alert('Profile updated successfully!');
+        setAlertModal({ show: true, message: 'Profile updated successfully!' });
       }
-      else alert(data.message || 'Failed to update profile');
+      else setAlertModal({ show: true, message: data.message || 'Failed to update profile' });
     } catch (err) {
-      alert('Something went wrong. Try again.');
+      setAlertModal({ show: true, message: 'Something went wrong. Try again.' });
     }
     finally {
       setSavingProfile(false); // Stop loading
@@ -225,19 +258,72 @@ const Dashboard = () => {
   };
 
   const calculateProfileCompletion = () => {
-    const fields = [user?.first_name, user?.last_name, user?.email, user?.gender, user?.country, phone];
-    const filled = fields.filter(Boolean).length;
-    return Math.floor((filled / fields.length) * 100);
+    const fields = [
+      user?.first_name,
+      user?.last_name,
+      user?.email,
+      user?.gender,
+      user?.country,
+      phone
+    ];
+  
+    let filledCount = fields.filter(Boolean).length;
+    let totalCount = fields.length;
+  
+    // Check if at least one qualification has meaningful data
+    const hasQualification = Array.isArray(qualifications) &&
+      qualifications.some(q => q.university || q.year || q.course);
+    if (hasQualification) filledCount += 1;
+    totalCount += 1;
+  
+    // Check if at least one experience has meaningful data
+    const hasExperience = Array.isArray(experiences) &&
+      experiences.some(e => e.company || e.from || e.to || e.role);
+    if (hasExperience) filledCount += 1;
+    totalCount += 1;
+  
+    // Check if CV is uploaded
+    if (cv) {
+      filledCount += 1;
+      totalCount += 1;
+    }
+  
+    // Check if Certificate is uploaded
+    if (certificate) {
+      filledCount += 1;
+      totalCount += 1;
+    }
+  
+    return Math.floor((filledCount / totalCount) * 100);
   };
 
-  const pieData = {
-    labels: ['Complete', 'Incomplete'],
-    datasets: [{
-      data: [calculateProfileCompletion(), 100 - calculateProfileCompletion()],
-      backgroundColor: ['#28a745', '#e0e0e0'],
-      borderWidth: 1,
-    }]
-  };
+  const profilePercent = calculateProfileCompletion();
+
+const pieData = {
+  labels: ['Completed', 'Remaining'],
+  datasets: [{
+    data: [profilePercent, 100 - profilePercent],
+    backgroundColor: ['#198754', '#f0f0f0'], // success green + light gray
+    borderColor: ['#198754', '#f0f0f0'],
+    borderWidth: 1
+  }]
+};
+  
+
+  // const calculateProfileCompletion = () => {
+  //   const fields = [user?.first_name, user?.last_name, user?.email, user?.gender, user?.country, phone];
+  //   const filled = fields.filter(Boolean).length;
+  //   return Math.floor((filled / fields.length) * 100);
+  // };
+
+  // const pieData = {
+  //   labels: ['Complete', 'Incomplete'],
+  //   datasets: [{
+  //     data: [calculateProfileCompletion(), 100 - calculateProfileCompletion()],
+  //     backgroundColor: ['#28a745', '#e0e0e0'],
+  //     borderWidth: 1,
+  //   }]
+  // };
 
   const addQualification = () => setQualifications([...qualifications, { university: '', year: '', course: '' }]);
   const addExperience = () => setExperiences([...experiences, { company: '', from: '', to: '', role: '' }]);
@@ -251,9 +337,14 @@ const Dashboard = () => {
             <Nav className="flex-column">
               <Nav.Link active={activeTab === 'dashboard'} onClick={() => handleTabChange('dashboard')}>Dashboard</Nav.Link>
               <Nav.Link active={activeTab === 'jobs'} onClick={() => handleTabChange('jobs')}>Jobs</Nav.Link>
+              
+
               <Nav.Link active={activeTab === 'messages'} onClick={() => handleTabChange('messages')}>
-                Messages {unreadCount > 0 && <span className="badge bg-danger ms-2">{unreadCount}</span>}
+                Messages {(!hasViewedMessages && unreadCount > 0) && (
+                  <span className="badge bg-danger ms-2">{unreadCount}</span>
+                )}
               </Nav.Link>
+
               <Nav.Link active={activeTab === 'profile'} onClick={() => handleTabChange('profile')}>Profile</Nav.Link>
             </Nav>
           </Col>
@@ -273,7 +364,7 @@ const Dashboard = () => {
                     </Card>
                   </Col>
                   <Col md={6}>
-                    <Card className='dashboard-card'>
+                  <Card className='dashboard-card user-notification'>
                     <Card.Body>
                       <h5>Message Notification</h5>
 
@@ -282,35 +373,67 @@ const Dashboard = () => {
                       ) : messages.length === 0 ? (
                         <Alert variant="info">No new message</Alert>
                       ) : (
-                        <ListGroup variant="flush">
-                          {messages.slice(0, 5).map((msg, i) => (
-                            <ListGroup.Item key={i}>
+                        <ListGroup variant="flush" className='msg-notification'>
+                          {[...messages].slice(-5).reverse().map((msg, i) => (
+                            <ListGroup.Item
+                              key={msg._id}
+                              style={{
+                                backgroundColor: i < newMessages ? '#f0f2f4' : 'transparent',
+                                fontWeight: i < newMessages ? 'bold' : 'normal',
+                                cursor: 'pointer'
+                              }}
+                              onClick={() => handleTabChange('messages')}
+                            >
                               <strong>From:</strong> {msg.sender || 'Admin'}<br />
-                              <span>{msg.content}</span>
+                              <span>{msg.content.length > 80 ? msg.content.slice(0, 80) + '...' : msg.content}</span>
                             </ListGroup.Item>
                           ))}
-                          {messages.length > 5 && (
-                            <Button variant="link" className="mt-2 p-0" onClick={() => handleTabChange('messages')}>
-                              View all messages
+                        </ListGroup>
+
+                      )}
+                    </Card.Body>
+                  </Card>
+
+
+
+                  <Card className="mt-3 dashboard-card job-alert-card job-list">
+                  <Card.Body>
+                      <h5>New Job Alerts</h5>
+
+                      {!Array.isArray(jobs) || jobs.length === 0 ? (
+                        <Alert variant="info">No new job posted</Alert>
+                      ) : (
+                        <ListGroup variant="flush" className='job-notification'>
+                          {[...jobs].slice(-5).reverse().map((job, i) => (
+                            <ListGroup.Item className='individual-job'
+                              key={job._id || i}
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => handleTabChange('jobs')}
+                            >
+                              <strong>{job.title}</strong> at {job.company}<br />
+                              <small className="text-muted">
+                                {job.introduction?.length > 70
+                                  ? job.introduction.slice(0, 70) + '...'
+                                  : job.introduction}
+                              </small>
+                            </ListGroup.Item>
+                          ))}
+                          {jobs.length > 5 && (
+                            <Button
+                              variant="link"
+                              className="mt-2 p-0"
+                              onClick={() => handleTabChange('jobs')}
+                            >
+                              View all jobs
                             </Button>
                           )}
                         </ListGroup>
                       )}
                     </Card.Body>
+                  </Card>
 
-                    </Card>
-                    <Card className="mt-3 dashboard-card job-alert-card" onClick={() => handleTabChange('jobs')} style={{ cursor: 'pointer' }}>
-                      <Card.Body>
-                        <h5>New Job Alert</h5>
-                        {latestJobTitle ? (
-                          <p>
-                            <strong>{latestJobTitle}</strong> is now available. Check the "Jobs" tab to apply!
-                          </p>
-                        ) : (
-                          <p>No new job posted</p>
-                        )}
-                      </Card.Body>
-                    </Card>
+
+
 
 
                   </Col>
@@ -345,8 +468,8 @@ const Dashboard = () => {
               </Accordion.Header>
               <Accordion.Body>
                 <p><strong>Company:</strong> {job.company}</p>
-                <p><strong>Introduction:</strong> {job.introduction}</p>
-                <p><strong>Role:</strong> {job.role}</p>
+                <p><strong>Description:</strong> {job.description}</p>
+                <p><strong>Location:</strong> {job.location}</p>
                 <p><strong>Qualification:</strong> {job.qualification}</p>
 
                 {status ? (
@@ -547,6 +670,29 @@ const Dashboard = () => {
           </Col>
         </Row>
       </Container>
+
+      <Modal
+        show={alertModal.show}
+        onHide={() => setAlertModal({ show: false, message: '' })}
+        centered
+        contentClassName="text-center border-0"
+      >
+        <Modal.Header className="border-0 justify-content-center">
+          {/* <Modal.Title className="w-100">Notification</Modal.Title> */}
+        </Modal.Header>
+
+        <Modal.Body className="border-0">
+          <p className="mb-0">{alertModal.message}</p>
+        </Modal.Body>
+
+        <Modal.Footer className="border-0 justify-content-center">
+          <Button variant="primary" onClick={() => setAlertModal({ show: false, message: '' })}>
+            Okay
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
     </div>
   );
 };

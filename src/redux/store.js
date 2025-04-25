@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import adminReducer, { setAdmin } from './adminSlice';
+import notificationReducer from './notificationSlice';
 
 // Configure store
 const store = configureStore({
   reducer: {
+    notification: notificationReducer,
     user: userReducer,
     admin: adminReducer,
   },

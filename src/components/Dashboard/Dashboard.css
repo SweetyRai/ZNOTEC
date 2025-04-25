@@ -71,7 +71,14 @@
     border-top: 1px solid #ddd;
     padding: 20px;
   }
+
+  .user-notification {
+    overflow: auto;
+  }
   
+  .job-list {
+    overflow: auto;
+  }
   .content-area {
     margin-left: 240px;
     padding: 60px 30px 30px;
@@ -81,6 +88,7 @@
   
   .card {
     border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0) !important;
   }
 
   .job-alert-card {
@@ -89,7 +97,15 @@
 
   .dashboard-card {
     height: 16em !important;
-    padding: 20px;
+    padding: 2px;
+  }
+
+  .msg-notification, .job-notification  {
+    background: #f8f9fa !important;
+  }
+
+  .individual-job {
+    padding: 1em;
   }
   
   .alert-info {
