@@ -104,6 +104,10 @@
     background: #f8f9fa !important;
   }
 
+  .user-card-view {
+    margin: 2em 5em;
+  }
+
   .individual-job {
     padding: 1em;
   }

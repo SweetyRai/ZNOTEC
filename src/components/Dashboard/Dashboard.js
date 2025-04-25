@@ -350,7 +350,7 @@ const pieData = {
           </Col>
 
           <Col md={12}>
-            <Tab.Content>
+            <Tab.Content className={activeTab === 'profile' ? 'user-card-view' : ''}>
               {activeTab === 'dashboard' && (
                 <Row className="mt-4">
                   <Col md={6}>
@@ -431,77 +431,69 @@ const pieData = {
                       )}
                     </Card.Body>
                   </Card>
-
-
-
-
-
                   </Col>
                 </Row>
               )}
 
-{activeTab === 'jobs' && (
-  <Card className="mt-4">
-    <Card.Body>
-      <h5>Available Jobs</h5>
-      <Accordion>
-        {jobs.map((job, index) => {
-          const application = user.jobs_applied?.find(
-            j => j._id?.toString() === job._id?.toString()
-          );
+              {activeTab === 'jobs' && (
+                <Card className="mt-4">
+                  <Card.Body>
+                    <h5>Available Jobs</h5>
+                    <Accordion>
+                      {jobs.map((job, index) => {
+                        const application = user.jobs_applied?.find(
+                          j => j._id?.toString() === job._id?.toString()
+                        );
 
-          const status = application?.status;
+                        const status = application?.status;
 
-          return (
-            <Accordion.Item eventKey={String(index)} key={job._id}>
-              <Accordion.Header>
-                {job.title}
-                {status === 'pending' && (
-                  <span className="badge bg-info text-dark ms-2">Applied</span>
-                )}
-                {status === 'selected' && (
-                  <span className="badge bg-success ms-2">Selected</span>
-                )}
-                {status === 'rejected' && (
-                  <span className="badge bg-danger ms-2">Rejected</span>
-                )}
-              </Accordion.Header>
-              <Accordion.Body>
-                <p><strong>Company:</strong> {job.company}</p>
-                <p><strong>Description:</strong> {job.description}</p>
-                <p><strong>Location:</strong> {job.location}</p>
-                <p><strong>Qualification:</strong> {job.qualification}</p>
+                        return (
+                          <Accordion.Item eventKey={String(index)} key={job._id}>
+                            <Accordion.Header>
+                              {job.title}
+                              {status === 'pending' && (
+                                <span className="badge bg-info text-dark ms-2">Applied</span>
+                              )}
+                              {status === 'selected' && (
+                                <span className="badge bg-success ms-2">Selected</span>
+                              )}
+                              {status === 'rejected' && (
+                                <span className="badge bg-danger ms-2">Rejected</span>
+                              )}
+                            </Accordion.Header>
+                            <Accordion.Body>
+                              <p><strong>Company:</strong> {job.company}</p>
+                              <p><strong>Description:</strong> {job.description}</p>
+                              <p><strong>Location:</strong> {job.location}</p>
+                              <p><strong>Qualification:</strong> {job.qualification}</p>
 
-                {status ? (
-                  <p className={`fw-bold text-${status === 'selected' ? 'success' : status === 'rejected' ? 'danger' : 'info'}`}>
-                    You have already applied.
-                  </p>
-                ) : (
-                  <Button
-                    variant="primary"
-                    disabled={applyingJobId === job._id}
-                    onClick={() => handleApply(job._id)}
-                  >
-                    {applyingJobId === job._id ? (
-                      <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        Applying...
-                      </>
-                    ) : 'Apply'}
-                  </Button>
-                )}
+                              {status ? (
+                                <p className={`fw-bold text-${status === 'selected' ? 'success' : status === 'rejected' ? 'danger' : 'info'}`}>
+                                  You have already applied.
+                                </p>
+                              ) : (
+                                <Button
+                                  variant="primary"
+                                  disabled={applyingJobId === job._id}
+                                  onClick={() => handleApply(job._id)}
+                                >
+                                  {applyingJobId === job._id ? (
+                                    <>
+                                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                      Applying...
+                                    </>
+                                  ) : 'Apply'}
+                                </Button>
+                              )}
 
-              </Accordion.Body>
-            </Accordion.Item>
-          );
-        })}
-      </Accordion>
-    </Card.Body>
-  </Card>
-)}
-
-
-
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        );
+                      })}
+                    </Accordion>
+                  </Card.Body>
+                </Card>
+              )}
 
               {activeTab === 'messages' && (
                 <Card className="mt-4">
@@ -631,7 +623,10 @@ const pieData = {
 
 
                     <div className="text-center mt-4">
-                      <Button variant="success" onClick={handleSaveProfile} disabled={savingProfile}>
+                      <Button  
+                      style={{ backgroundColor: '#4197f1', border: 'none', color: '#fff' }}
+                      size="sm"
+                      onClick={handleSaveProfile} disabled={savingProfile}>
                         {savingProfile ? (
                           <>
                             <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" />

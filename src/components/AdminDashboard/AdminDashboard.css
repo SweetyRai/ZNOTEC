@@ -8,8 +8,12 @@
 
 .admin-main {
   width: 100%;
-  padding: 60px 30px 30px;
+  padding: 10px 30px 30px;
   background-color: #f5f6fa;
+}
+
+.admin-applicant-list {
+  padding: 1em;
 }
 
 .admin-sidebar {
@@ -71,6 +75,10 @@
   background-color: #4197f1;
   width: 0%;
   transition: width 0.5s ease-in-out;
+}
+
+.admin-job-list-card {
+  padding: 0em;
 }
 
 /* Responsive */

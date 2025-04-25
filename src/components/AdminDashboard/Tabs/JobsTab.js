@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Modal, Button, Card, ListGroup, Alert } from 'react-bootstrap';
+import { Form, Modal, Button, Card, ListGroup, Alert, Row, Col } from 'react-bootstrap';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import JobCreateForm from './JobCreateForm';
 
@@ -173,20 +173,47 @@ const JobsTab = () => {
 
       {view === 'list' && (
         <>
-          <div className="d-flex justify-content-between align-items-center mb-3">
+          <div className="d-flex justify-content-between align-items-center mb-4">
             <h4 className="mb-0">Job Manager</h4>
-            <Button variant="primary" onClick={() => setView('createJob')}>Create Job</Button>
+            <Button variant="primary" onClick={() => setView('createJob')}>+ Create Job</Button>
           </div>
-          {message && <Alert variant="success">{message}</Alert>}
-          <ListGroup>
-            {jobs.map((job) => (
-              <ListGroup.Item key={job._id} action onClick={() => handleJobClick(job)}>
-                <strong>{job.title}</strong> — {job.company}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+
+          {message && (
+            <Alert variant="success" className="text-center">
+              {message}
+            </Alert>
+          )}
+
+          <Card className="admin-job-list-card">
+            <Card.Body>
+              {jobs.length === 0 ? (
+                <p className="text-center text-muted">No jobs posted yet.</p>
+              ) : (
+                <ListGroup variant="flush">
+                  {jobs.map((job) => (
+                    <ListGroup.Item
+                      className="individual-job-admin py-3"
+                      key={job._id}
+                      action
+                      onClick={() => handleJobClick(job)}
+                      style={{
+                        borderBottom: '1px solid #eee',
+                        transition: 'background 0.2s',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = '#f8f9fa')}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+                    >
+                      <div className="fw-bold">{job.title}</div>
+                      <div className="text-muted">{job.company}</div>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              )}
+            </Card.Body>
+          </Card>
         </>
       )}
+
 
       {view === 'createJob' && (
         <JobCreateForm onJobCreated={handleJobCreated} />
@@ -199,143 +226,181 @@ const JobsTab = () => {
           <p><strong>Description:</strong> {selectedJob.description}</p>
           <p><strong>Qualification:</strong> {selectedJob.qualification}</p>
           <p><strong>Location:</strong> {selectedJob.location || 'Not specified'}</p>
-          <Button variant="info" onClick={handleShowApplicants}>Show Applicants</Button>
-        </Card>
-      )}
-
-{view === 'applicants' && (
-  <>
-    <h5>Applicants</h5>
-    {jobApplicants.length ? (
-      <ListGroup>
-        {jobApplicants.map((app) => {
-          // Make sure both IDs are strings before comparing
-          console.log(app.first_name, app);
-
-          const jobApplication = app.jobs_applied?.find(j =>
-            
-            j._id?.toString() === selectedJob._id?.toString()
-          );
-
-          return (
-            <ListGroup.Item
-              key={app._id}
-              action
-              onClick={() => handleApplicantClick(app._id)}
-              className="d-flex justify-content-between align-items-center"
+          <div className="text-center my-3">
+            <Button
+              style={{ backgroundColor: '#4197f1', border: 'none', color: '#fff' }}
+              size="sm"
+              onClick={handleShowApplicants}
             >
-              <span>{app.first_name} {app.last_name}</span>
+              Show Applicants
+            </Button>
+          </div>
 
-              {jobApplication?.status === 'pending' && (
-                <span className="badge bg-warning text-dark">Pending</span>
-              )}
-              {jobApplication?.status === 'selected' && (
-                <span className="badge bg-success">Selected</span>
-              )}
-              {jobApplication?.status === 'rejected' && (
-                <span className="badge bg-danger">Rejected</span>
-              )}
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
-    ) : (
-      <p>No applicants found for this job.</p>
-    )}
-  </>
-)}
-
-
-
-
-
-      {view === 'applicantProfile' && applicantDetails && (
-        <Card className="p-3 shadow-sm">
-          <h5>{applicantDetails.first_name} {applicantDetails.last_name}</h5>
-          <p><strong>Gender:</strong> {applicantDetails.gender}</p>
-          <p><strong>Role:</strong> {applicantDetails.role}</p>
-          <p><strong>Country:</strong> {applicantDetails.country}</p>
-          <p><strong>Email:</strong> {applicantDetails.email}</p>
-          <p><strong>Phone:</strong> {applicantDetails.phone}</p>
-
-          <h6>Qualification</h6>
-          {applicantDetails.qualification.map((q, idx) => (
-            <p key={idx}>
-              {q.university}, {q.course} ({q.year})
-            </p>
-          ))}
-
-          <h6>Experience</h6>
-          {applicantDetails.experience.map((exp, idx) => (
-            <p key={idx}>
-              {exp.company}, {exp.role} ({exp.from} - {exp.to})
-            </p>
-          ))}
-
-          {(applicantDetails.cv || applicantDetails.certificate) && (
-            <div className="mt-3">
-              <Button variant="info" onClick={() => setShowDocs(true)}>
-                View CV & Cover Letter
-              </Button>
-            </div>
-          )}
-
-
-          {/* {selectedJob?.applicants?.includes(applicantDetails._id) &&
-            applicantDetails.jobs_applied?.some(j => j.status === 'pending') && (
-              <div className="d-flex gap-2 mt-4">
-                <Button variant="success" onClick={() => handleDecision('accept')}>Accept</Button>
-                <Button variant="danger" onClick={() => handleDecision('reject')}>Reject</Button>
-              </div>
-          )} */}
-
-{(() => {
-  const application = applicantDetails.jobs_applied?.find(
-    j => j._id?.toString() === selectedJob._id?.toString() && j.status === 'pending'
-  );
-
-  return application ? (
-    <div className="d-flex gap-2 mt-4">
-      <Button variant="success" onClick={() => handleDecision('accept')}>Accept</Button>
-      <Button variant="danger" onClick={() => handleDecision('reject')}>Reject</Button>
-    </div>
-  ) : null;
-})()}
-
-
-
-          <Modal show={showDocs} onHide={() => setShowDocs(false)} size="lg">
-            <Modal.Header closeButton>
-              <Modal.Title>Applicant Documents</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-            {applicantDetails.cv && (
-              <div className="mb-4">
-                <h6>CV</h6>
-                <embed
-                  src={`data:${applicantDetails.cv.contentType};base64,${base64String(applicantDetails.cv.data.data)}`}
-                  type="application/pdf"
-                  width="100%"
-                  height="400px"
-                />
-              </div>
-            )}
-
-            {applicantDetails.certificate && (
-              <div>
-                <h6>Cover Letter / Certificate</h6>
-                <embed
-                  src={`data:${applicantDetails.certificate.contentType};base64,${base64String(applicantDetails.certificate.data.data)}`}
-                  type="application/pdf"
-                  width="100%"
-                  height="400px"
-                />
-              </div>
-            )}
-            </Modal.Body>
-          </Modal>
         </Card>
       )}
+
+        {view === 'applicants' && (
+          <>
+            <h5>Applicants</h5>
+            {jobApplicants.length ? (
+              <ListGroup>
+                {jobApplicants.map((app) => {
+                  // Make sure both IDs are strings before comparing
+                  console.log(app.first_name, app);
+
+                  const jobApplication = app.jobs_applied?.find(j =>
+                    
+                    j._id?.toString() === selectedJob._id?.toString()
+                  );
+
+                  return (
+                    <ListGroup.Item
+                      key={app._id}
+                      action
+                      onClick={() => handleApplicantClick(app._id)}
+                      className="d-flex justify-content-between align-items-center admin-applicant-list"
+                    >
+                      <span>{app.first_name} {app.last_name}</span>
+
+                      {jobApplication?.status === 'pending' && (
+                        <span className="badge bg-warning text-dark">Pending</span>
+                      )}
+                      {jobApplication?.status === 'selected' && (
+                        <span className="badge bg-success">Selected</span>
+                      )}
+                      {jobApplication?.status === 'rejected' && (
+                        <span className="badge bg-danger">Rejected</span>
+                      )}
+                    </ListGroup.Item>
+                  );
+                })}
+              </ListGroup>
+            ) : (
+              <p>No applicants found for this job.</p>
+            )}
+          </>
+        )}
+
+
+
+
+
+        {view === 'applicantProfile' && applicantDetails && (
+          <Card className="p-4 shadow rounded-4">
+            <div className="text-center mb-4">
+              <h4 className="fw-bold">{applicantDetails.first_name} {applicantDetails.last_name}</h4>
+              <p className="text-muted">{applicantDetails.role}</p>
+            </div>
+
+            <Row className="mb-3">
+              <Col md={6}>
+                <p><strong>Gender:</strong> {applicantDetails.gender}</p>
+              </Col>
+              <Col md={6}>
+                <p><strong>Country:</strong> {applicantDetails.country}</p>
+              </Col>
+            </Row>
+
+            <Row className="mb-3">
+              <Col md={6}>
+                <p><strong>Email:</strong> {applicantDetails.email}</p>
+              </Col>
+              <Col md={6}>
+                <p><strong>Phone:</strong> {applicantDetails.phone}</p>
+              </Col>
+            </Row>
+
+            <hr />
+
+            <div className="mb-4">
+              <h5 className="fw-bold">Qualifications</h5>
+              {applicantDetails.qualification.length > 0 ? (
+                <ListGroup variant="flush">
+                  {applicantDetails.qualification.map((q, idx) => (
+                    <ListGroup.Item key={idx}>
+                      {q.university} — {q.course} ({q.year})
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              ) : <p className="text-muted">No qualifications added</p>}
+            </div>
+
+            <div className="mb-4">
+              <h5 className="fw-bold">Experience</h5>
+              {applicantDetails.experience.length > 0 ? (
+                <ListGroup variant="flush">
+                  {applicantDetails.experience.map((exp, idx) => (
+                    <ListGroup.Item key={idx}>
+                      {exp.company} — {exp.role} ({exp.from} - {exp.to})
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              ) : <p className="text-muted">No experiences added</p>}
+            </div>
+
+            {(applicantDetails.cv || applicantDetails.certificate) && (
+              <div className="text-center mb-4 d-flex justify-content-center gap-3 flex-wrap">
+                {applicantDetails.cv && (
+                  <Button
+                    style={{ backgroundColor: '#4197f1', border: 'none', color: '#fff' }}
+                    size="sm"
+                    onClick={() => setShowDocs('cv')}
+                  >
+                    View CV
+                  </Button>
+                )}
+                {applicantDetails.certificate && (
+                  <Button
+                    style={{ backgroundColor: '#4197f1', border: 'none', color: '#fff' }}
+                    size="sm"
+                    onClick={() => setShowDocs('certificate')}
+                  >
+                    View Certificate
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {(() => {
+              const application = applicantDetails.jobs_applied?.find(
+                j => j._id?.toString() === selectedJob._id?.toString() && j.status === 'pending'
+              );
+              return application ? (
+                <div className="d-flex justify-content-center gap-3 mt-4">
+                  <Button variant="success" onClick={() => handleDecision('accept')}>Accept</Button>
+                  <Button variant="danger" onClick={() => handleDecision('reject')}>Reject</Button>
+                </div>
+              ) : null;
+            })()}
+
+            {/* Modal for CV or Certificate */}
+            <Modal show={!!showDocs} onHide={() => setShowDocs(null)} size="lg" centered>
+              <Modal.Header closeButton>
+                <Modal.Title>{showDocs === 'cv' ? 'CV Preview' : 'Certificate Preview'}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {showDocs === 'cv' && applicantDetails.cv && (
+                  <embed
+                    src={`data:${applicantDetails.cv.contentType};base64,${base64String(applicantDetails.cv.data.data)}`}
+                    type="application/pdf"
+                    width="100%"
+                    height="500px"
+                  />
+                )}
+                {showDocs === 'certificate' && applicantDetails.certificate && (
+                  <embed
+                    src={`data:${applicantDetails.certificate.contentType};base64,${base64String(applicantDetails.certificate.data.data)}`}
+                    type="application/pdf"
+                    width="100%"
+                    height="500px"
+                  />
+                )}
+              </Modal.Body>
+            </Modal>
+          </Card>
+        )}
+
+
     </div>
   );
 };
