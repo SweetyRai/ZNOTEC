@@ -13,6 +13,8 @@ import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import ChatBox from './ChatBox';
 import Navbar from '../Navbar/Navbar';
+import ProjectsTab from './ProjectsTab';
+import EmployeesTab from './EmployeesTab';
 import './Dashboard.css';
 
 
@@ -346,6 +348,12 @@ const pieData = {
               </Nav.Link>
 
               <Nav.Link active={activeTab === 'profile'} onClick={() => handleTabChange('profile')}>Profile</Nav.Link>
+              {user?.role === 'B2B' && (
+              <>
+                <Nav.Link active={activeTab === 'projects'} onClick={() => handleTabChange('projects')}>Projects</Nav.Link>
+                <Nav.Link active={activeTab === 'employees'} onClick={() => handleTabChange('employees')}>Employees</Nav.Link>
+              </>
+            )}
             </Nav>
           </Col>
 
@@ -660,6 +668,14 @@ const pieData = {
 
                   </Card.Body>
                 </Card>
+              )}
+
+              {activeTab === 'projects' && user?.role === 'B2B' && (
+                <ProjectsTab user={user} />
+              )}
+
+              {activeTab === 'employees' && user?.role === 'B2B' && (
+                <EmployeesTab user={user} />
               )}
             </Tab.Content>
           </Col>

@@ -12,6 +12,10 @@
   background-color: #f5f6fa;
 }
 
+.notification-cards {
+  margin-bottom: 0 !important;
+}
+
 .admin-applicant-list {
   padding: 1em;
 }

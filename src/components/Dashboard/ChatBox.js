@@ -3,18 +3,19 @@ import './ChatBox.css';
 
 const ChatBox = ({ user }) => {
   const API_URL = process.env.REACT_APP_API_URL;
-  const ENV_MODE = process.env.REACT_APP_ENV_MODE;
   const [messages, setMessages] = useState([]);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
+
+  const isJobSeeker = user?.role === 'JobSeeker';
 
   useEffect(() => {
     fetchMessages();
   }, []);
 
   useEffect(() => {
-    // messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const fetchMessages = async () => {
@@ -22,7 +23,7 @@ const ChatBox = ({ user }) => {
       const res = await fetch(API_URL+`/private/api/messages/${user._id}`);
       const data = await res.json();
       if (res.ok) {
-        setMessages(data); // Assuming data is an array of { content, sender, timestamp }
+        setMessages(data);
       } else {
         setError(data.message || 'Failed to load messages');
       }
@@ -33,7 +34,7 @@ const ChatBox = ({ user }) => {
   };
 
   const handleSend = async () => {
-    if (!msg.trim()) return;
+    if (!msg.trim() || isJobSeeker) return;  // prevent sending if JobSeeker
 
     try {
       const res = await fetch(API_URL+'/api/messages/send', {
@@ -69,15 +70,31 @@ const ChatBox = ({ user }) => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="chat-input mt-2 d-flex">
-        <input
-          type="text"
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-          placeholder="Write a message..."
-          className="form-control"
-        />
-        <button onClick={handleSend} className="btn btn-primary ms-2">Send</button>
+
+      <div className="chat-input mt-2 d-flex flex-column">
+        <div className="d-flex">
+          <input
+            type="text"
+            value={msg}
+            onChange={(e) => setMsg(e.target.value)}
+            placeholder={isJobSeeker ? "Messaging disabled for Job Seekers" : "Write a message..."}
+            className="form-control"
+            disabled={isJobSeeker}
+          />
+          <button
+            onClick={handleSend}
+            className="btn btn-primary ms-2"
+            disabled={isJobSeeker}
+          >
+            Send
+          </button>
+        </div>
+
+        {isJobSeeker && (
+          <small className="text-muted mt-1">
+            Messaging feature is not available for Job Seekers.
+          </small>
+        )}
       </div>
     </div>
   );

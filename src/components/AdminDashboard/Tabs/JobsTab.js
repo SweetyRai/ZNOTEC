@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Form, Modal, Button, Card, ListGroup, Alert, Row, Col } from 'react-bootstrap';
 import { ArrowLeft } from 'react-bootstrap-icons';
 import JobCreateForm from './JobCreateForm';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const JobsTab = () => {
+  const [isLoadingApplicants, setIsLoadingApplicants] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [alertModal, setAlertModal] = useState({ show: false, message: '' });
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [jobApplicants, setJobApplicants] = useState([]);
@@ -21,6 +26,32 @@ const JobsTab = () => {
     // fetchLatestUser();
     fetchJobs();
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabPath = params.get('tab');
+    if (tabPath) {
+      const [tab, jobSegment, applicantSegment] = tabPath.split('/');
+      if (tab === 'jobs' && jobSegment?.startsWith('jobid=')) {
+        const jobId = jobSegment.split('=')[1];
+        const shouldShowApplicants = applicantSegment === 'applicants';
+
+        const trySelectJob = async () => {
+          const foundJob = jobs.find(j => j._id === jobId);
+          if (foundJob) {
+            setSelectedJob(foundJob);
+            if (shouldShowApplicants) {
+              await handleShowApplicants(foundJob);
+            } else {
+              setView('jobDetails');
+            }
+          }
+        };
+
+        trySelectJob();
+      }
+    }
+  }, [location.search, jobs]);
 
   // const fetchLatestUser = async () => {
   //   console.log('inside fetchUser');
@@ -55,18 +86,44 @@ const JobsTab = () => {
   const handleJobClick = (job) => {
     setSelectedJob(job);
     setView('jobDetails');
+    navigate(`/admin-dashboard?tab=jobs/jobid=${job._id}`);
   };
 
-  const handleShowApplicants = async () => {
+  const handleShowApplicantsUI = async () => {
     try {
+      setView('applicants');
+      setIsLoadingApplicants(true);
       const res = await fetch(API_URL+`/api/admin/jobs/${selectedJob._id}/applicants`);
       const data = await res.json();
       setJobApplicants(data);
-      setView('applicants');
+      navigate(`/admin-dashboard?tab=jobs/jobid=${selectedJob._id}/applicants`);
+      
     } catch (err) {
       console.error('Error fetching applicants', err);
     }
+    finally {
+      setIsLoadingApplicants(false);
+    }
   };
+
+  const handleShowApplicants = async (job = selectedJob) => {
+    try {
+      debugger
+      const job_id = job._id;
+      setIsLoadingApplicants(true);
+      // setSelectedJob(job);
+      setView('applicants');
+      const res = await fetch(`${API_URL}/api/admin/jobs/${job_id}/applicants`);
+      const data = await res.json();
+      setJobApplicants(data);
+      
+    } catch (err) {
+      console.error('Error fetching applicants', err);
+    } finally {
+      setIsLoadingApplicants(false);
+    }
+  };
+  
 
   const base64String = (arrayBuffer) => {
     const uint8Array = new Uint8Array(arrayBuffer);
@@ -81,16 +138,29 @@ const JobsTab = () => {
       const data = await res.json();
       setApplicantDetails(data);
       setView('applicantProfile');
+      // navigate(`/admin-dashboard?tab=jobs/jobid=${selectedJob._id}/applicants/applicantProfile`);
     } catch (err) {
       console.error('Error fetching applicant profile', err);
     }
   };
 
   const handleBack = () => {
-    if (view === 'applicantProfile') setView('applicants');
-    else if (view === 'applicants') setView('jobDetails');
-    else if (view === 'jobDetails') setView('list');
-    else if (view === 'createJob') setView('list');
+    if (view === 'applicantProfile') {
+      setView('applicants');
+      navigate(`/admin-dashboard?tab=jobs/jobid=${selectedJob._id}/applicants`);
+    }
+    else if (view === 'applicants') {
+      setView('jobDetails');
+      navigate(`/admin-dashboard?tab=jobs/jobid=${selectedJob._id}`);
+    }
+    else if (view === 'jobDetails') {
+      setView('list');
+      navigate(`/admin-dashboard?tab=jobs`);
+    }
+    else if (view === 'createJob') {
+      setView('list');
+      navigate(`/admin-dashboard?tab=jobs`);
+    }
   };
 
   const handleJobCreated = () => {
@@ -119,7 +189,8 @@ const JobsTab = () => {
       });
   
       if (res.ok) {
-        alert(`Applicant has been ${type === 'accept' ? 'selected' : 'rejected'} and notified.`);
+        // alert(`Applicant has been ${type === 'accept' ? 'selected' : 'rejected'} and notified.`);
+        setAlertModal({ show: true, message: `Applicant has been ${type === 'accept' ? 'selected' : 'rejected'} and notified.` });
   
         await fetch(API_URL+'/private/api/notifications/userNotification', {
           method: 'POST',
@@ -154,11 +225,13 @@ const JobsTab = () => {
   
         setView('applicants');
       } else {
-        alert('Failed to send notification.');
+        // alert('Failed to send notification.');
+        setAlertModal({ show: true, message: 'Failed to send notification.' });
       }
     } catch (err) {
       console.error('Decision error:', err);
-      alert('Server error');
+      // alert('Server error');
+      setAlertModal({ show: true, message: 'Server error' });
     }
   };
   
@@ -230,7 +303,7 @@ const JobsTab = () => {
             <Button
               style={{ backgroundColor: '#4197f1', border: 'none', color: '#fff' }}
               size="sm"
-              onClick={handleShowApplicants}
+              onClick={handleShowApplicantsUI}
             >
               Show Applicants
             </Button>
@@ -239,47 +312,55 @@ const JobsTab = () => {
         </Card>
       )}
 
-        {view === 'applicants' && (
-          <>
-            <h5>Applicants</h5>
-            {jobApplicants.length ? (
-              <ListGroup>
-                {jobApplicants.map((app) => {
-                  // Make sure both IDs are strings before comparing
-                  console.log(app.first_name, app);
+{view === 'applicants' && (
+  <>
+    {isLoadingApplicants ? (
+      <div className="text-center py-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading applicants...</span>
+        </div>
+        <p className="mt-2">Loading applicants...</p>
+      </div>
+    ) : (
+      <>
+        <h5>Applicants</h5>
+        {jobApplicants.length ? (
+          <ListGroup>
+            {jobApplicants.map((app) => {
+              const jobApplication = app.jobs_applied?.find(j =>
+                j._id?.toString() === selectedJob._id?.toString()
+              );
 
-                  const jobApplication = app.jobs_applied?.find(j =>
-                    
-                    j._id?.toString() === selectedJob._id?.toString()
-                  );
+              return (
+                <ListGroup.Item
+                  key={app._id}
+                  action
+                  onClick={() => handleApplicantClick(app._id)}
+                  className="d-flex justify-content-between align-items-center admin-applicant-list"
+                >
+                  <span>{app.first_name} {app.last_name}</span>
 
-                  return (
-                    <ListGroup.Item
-                      key={app._id}
-                      action
-                      onClick={() => handleApplicantClick(app._id)}
-                      className="d-flex justify-content-between align-items-center admin-applicant-list"
-                    >
-                      <span>{app.first_name} {app.last_name}</span>
-
-                      {jobApplication?.status === 'pending' && (
-                        <span className="badge bg-warning text-dark">Pending</span>
-                      )}
-                      {jobApplication?.status === 'selected' && (
-                        <span className="badge bg-success">Selected</span>
-                      )}
-                      {jobApplication?.status === 'rejected' && (
-                        <span className="badge bg-danger">Rejected</span>
-                      )}
-                    </ListGroup.Item>
-                  );
-                })}
-              </ListGroup>
-            ) : (
-              <p>No applicants found for this job.</p>
-            )}
-          </>
+                  {jobApplication?.status === 'pending' && (
+                    <span className="badge bg-warning text-dark">Pending</span>
+                  )}
+                  {jobApplication?.status === 'selected' && (
+                    <span className="badge bg-success">Selected</span>
+                  )}
+                  {jobApplication?.status === 'rejected' && (
+                    <span className="badge bg-danger">Rejected</span>
+                  )}
+                </ListGroup.Item>
+              );
+            })}
+          </ListGroup>
+        ) : (
+          <p>No applicants found for this job.</p>
         )}
+      </>
+    )}
+  </>
+)}
+
 
 
 
@@ -399,6 +480,24 @@ const JobsTab = () => {
             </Modal>
           </Card>
         )}
+        <Modal
+          show={alertModal.show}
+          onHide={() => setAlertModal({ show: false, message: '' })}
+          centered
+          contentClassName="text-center border-0"
+        >
+          <Modal.Header className="border-0 justify-content-center"></Modal.Header>
+
+          <Modal.Body className="border-0">
+            <p className="mb-0">{alertModal.message}</p>
+          </Modal.Body>
+
+          <Modal.Footer className="border-0 justify-content-center">
+            <Button variant="primary" onClick={() => setAlertModal({ show: false, message: '' })}>
+              Okay
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
 
     </div>

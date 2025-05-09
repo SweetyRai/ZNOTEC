@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector  } from 'react-redux';
 import { setUser } from '../../redux/userSlice';
 import Navbar from '../Navbar/Navbar';
 import './RegistrationAndLogin.css';
 
 const RegistrationAndLogin = () => {
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const API_URL = process.env.REACT_APP_API_URL;
   const ENV_MODE = process.env.REACT_APP_ENV_MODE;
   const dispatch = useDispatch();
@@ -119,7 +120,12 @@ const RegistrationAndLogin = () => {
         if (res.ok) {
           console.log(result)
           dispatch(setUser({ user: result.user, token: result.token }));
-          navigate('/dashboard');
+          const storedUser = localStorage.getItem('user');
+          const storedToken = localStorage.getItem('token');
+          if ((user && isAuthenticated) || (storedUser && storedToken)) {
+            navigate('/dashboard/dashboard'); // 🔥 redirect immediately
+          }
+          // navigate('/dashboard');
         } else {
           setErrors({ form: result.msg || 'Login failed.' });
         }
