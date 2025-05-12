@@ -66,9 +66,6 @@ const Dashboard = () => {
   const [certificatePreviewUrl, setCertificatePreviewUrl] = useState(null);
 
   useEffect(() => {
-     
-  
-
     if (user) {
       // Qualifications
       if (user.qualification?.length)
@@ -338,9 +335,11 @@ const pieData = {
           <Col md={2} className="sidebar full-height">
             <Nav className="flex-column">
               <Nav.Link active={activeTab === 'dashboard'} onClick={() => handleTabChange('dashboard')}>Dashboard</Nav.Link>
-              <Nav.Link active={activeTab === 'jobs'} onClick={() => handleTabChange('jobs')}>Jobs</Nav.Link>
-              
-
+              {user?.role === 'JobSeeker' && (
+                <>
+                  <Nav.Link active={activeTab === 'jobs'} onClick={() => handleTabChange('jobs')}>Jobs</Nav.Link>
+                </>
+              )}
               <Nav.Link active={activeTab === 'messages'} onClick={() => handleTabChange('messages')}>
                 Messages {(!hasViewedMessages && unreadCount > 0) && (
                   <span className="badge bg-danger ms-2">{unreadCount}</span>
