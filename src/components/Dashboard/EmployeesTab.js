@@ -7,8 +7,9 @@ const EmployeesTab = ({ user }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [position, setPosition] = useState('');
-  const [skill, setSkill] = useState('');
+  const [skills, setSkill] = useState('');
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+
 
   const API_URL = process.env.REACT_APP_API_URL;
 
@@ -18,6 +19,7 @@ const EmployeesTab = ({ user }) => {
     setEmployees(data);
   };
 
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -26,7 +28,7 @@ const EmployeesTab = ({ user }) => {
     await fetch(API_URL + `/private/api/employees`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, position, skill, b2bId: user._id })
+      body: JSON.stringify({ name, email, position, skills, b2bId: user._id })
     });
     setShowModal(false);
     resetForm();
@@ -34,10 +36,12 @@ const EmployeesTab = ({ user }) => {
   };
 
   const handleUpdate = async () => {
+    console.log('emp id->', selectedEmployee._id);
+    
     await fetch(API_URL + `/private/api/employees/${selectedEmployee._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, position, skill })
+      body: JSON.stringify({ name, email, position, skills })
     });
     setSelectedEmployee(null);
     resetForm();
@@ -52,11 +56,13 @@ const EmployeesTab = ({ user }) => {
   };
 
   const handleEmployeeClick = (employee) => {
+    console.log('emp->', employee);
+    
     setSelectedEmployee(employee);
     setName(employee.name);
     setEmail(employee.email);
     setPosition(employee.position);
-    setSkill(employee.skill);
+    setSkill(employee.skills);
   };
 
   return (
@@ -74,7 +80,7 @@ const EmployeesTab = ({ user }) => {
           </Row>
           <Row className="mt-3">
             <Col md={6}><Form.Group><Form.Label>Position</Form.Label><Form.Control value={position} onChange={e => setPosition(e.target.value)} /></Form.Group></Col>
-            <Col md={6}><Form.Group><Form.Label>Skill</Form.Label><Form.Control value={skill} onChange={e => setSkill(e.target.value)} /></Form.Group></Col>
+            <Col md={6}><Form.Group><Form.Label>Skills</Form.Label><Form.Control value={skills} onChange={e => setSkill(e.target.value)} /></Form.Group></Col>
           </Row>
           <div className="text-end mt-3">
             <Button variant="primary" onClick={handleUpdate}>Save Changes</Button>
@@ -85,7 +91,7 @@ const EmployeesTab = ({ user }) => {
         <ListGroup>
           {employees.map(e => (
             <ListGroup.Item key={e._id} action onClick={() => handleEmployeeClick(e)}>
-              <strong>{e.name}</strong> - {e.position} <small className="text-muted">({e.skill || 'No skill specified'})</small>
+              <strong>{e.name}</strong> - {e.position} <small className="text-muted">({e.skills || 'No skill specified'})</small>
             </ListGroup.Item>
           ))}
         </ListGroup>
@@ -108,8 +114,8 @@ const EmployeesTab = ({ user }) => {
               <Form.Control value={position} onChange={e => setPosition(e.target.value)} />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Skill</Form.Label>
-              <Form.Control value={skill} onChange={e => setSkill(e.target.value)} />
+              <Form.Label>Skills</Form.Label>
+              <Form.Control value={skills} onChange={e => setSkill(e.target.value)} />
             </Form.Group>
           </Form>
         </Modal.Body>
