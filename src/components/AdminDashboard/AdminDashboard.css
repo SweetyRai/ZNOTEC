@@ -85,8 +85,56 @@
   padding: 0em;
 }
 
+.chat-box {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.chat-box .message {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+.chat-box .user-message {
+  background-color: #99caff; /* Bootstrap primary */
+  color: white;
+  margin-right: auto;
+}
+
+
+
+.chat-box .admin-message {
+  background-color: #f7d0bb; /* Bootstrap warning */
+  color: black;
+  margin-left: auto;
+}
+
+.chat-box small {
+  font-size: 0.75rem;
+  color: #6c757d;
+  display: block;
+  text-align: right;
+}
+
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
+  .chat-box {
+    max-height: 300px;
+  }
+
+  .chat-box .message {
+    max-width: 100%;
+  }
+
   .admin-dashboard-container {
     flex-direction: column;
     padding: 2em;

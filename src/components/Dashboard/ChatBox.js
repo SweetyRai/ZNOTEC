@@ -34,10 +34,10 @@ const ChatBox = ({ user }) => {
   };
 
   const handleSend = async () => {
-    if (!msg.trim() || isJobSeeker) return;  // prevent sending if JobSeeker
+    if (!msg.trim() || isJobSeeker) return;  
 
     try {
-      const res = await fetch(API_URL+'/api/messages/send', {
+      const res = await fetch(API_URL+'/private/api/messages/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user._id, content: msg })
@@ -61,7 +61,7 @@ const ChatBox = ({ user }) => {
       <div className="chat-messages">
         {error && <div className="text-danger">{error}</div>}
         {messages.map((m, i) => (
-          <div key={i} className={`message-bubble ${m.sender === 'user' ? 'user-message' : 'admin-message'}`}>
+          <div key={i} className={`message-bubble ${m.sender === 'user' ? 'user-message-user-role' : 'admin-message-user-role'}`}>
             <p className="mb-1">{m.content}</p>
             <small className="text-muted">
               {new Date(m.timestamp).toLocaleTimeString()}
