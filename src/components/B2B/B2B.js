@@ -17,7 +17,7 @@ const B2BPage = () => {
             Transform your business with our B2B solutions for SAP, Cloud, IT Consulting, and Enterprise Resource Planning.
           </p>
           <Button variant="primary" className="cta-button">
-            <Link to="/contact" style={{ textDecoration: 'none' }}>
+            <Link to="/sign_in" style={{ textDecoration: 'none' }}>
               Get Started
             </Link>
           </Button>
@@ -78,7 +78,7 @@ const B2BPage = () => {
         <Container>
           <h2>Ready to scale your business?</h2>
           <Button variant="light" className="cta-button b2b-cta-button">
-            <Link to="/contact" className="b2b-contact" style={{ textDecoration: 'none'}}>
+            <Link to="/sign_in" className="b2b-contact" style={{ textDecoration: 'none'}}>
               Get Started
             </Link>
           </Button>

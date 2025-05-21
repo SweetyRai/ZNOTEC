@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'react-bootstrap-icons';
 
 const ProjectsTab = ({ user }) => {
+  const [category, setCategory] = useState('');
+  const [startDate, setStartDate] = useState('');
   const [projects, setProjects] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
@@ -49,7 +51,7 @@ const ProjectsTab = ({ user }) => {
     await fetch(API_URL + '/private/api/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, description, technologies, b2bId: user._id })
+      body: JSON.stringify({ title, description, technologies, category, start_date: startDate ,b2bId: user._id })
     });
     setShowModal(false);
     setTitle('');
@@ -73,25 +75,56 @@ const ProjectsTab = ({ user }) => {
 
 
       {selectedProject ? (
-        <Card className="p-3 mb-3">
-          
-          <h5>{selectedProject.title}</h5>
-          <p><strong>Description:</strong> {selectedProject.description}</p>
-          <p><strong>Technologies:</strong> {selectedProject.technologies}</p>
-        </Card>
+  <Card className="p-3 mb-3 shadow-sm">
+    <h5>{selectedProject.title}</h5>
+    <p><strong>Description:</strong> {selectedProject.description}</p>
+
+    <p>
+      <strong>Technologies:</strong>{' '}
+      {Array.isArray(selectedProject.technologies)
+        ? selectedProject.technologies.join(', ')
+        : selectedProject.technologies}
+    </p>
+
+    <p>
+      <strong>Category:</strong>{' '}
+      {Array.isArray(selectedProject.category) ? (
+        selectedProject.category.map((cat, i) => (
+          <span key={i} className="badge bg-info text-dark me-2">{cat}</span>
+        ))
       ) : (
-        <ListGroup>
-          {projects.map(p => (
-            <ListGroup.Item
-              key={p._id}
-              action
-              onClick={() => handleProjectClick(p)}
-            >
-              {p.title}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+        <span className="badge bg-info text-dark">{selectedProject.category}</span>
       )}
+    </p>
+
+    <p>
+      <strong>Start Date:</strong>{' '}
+      {selectedProject.start_date ? new Date(selectedProject.start_date).toLocaleDateString() : 'N/A'}
+    </p>
+  </Card>
+        ) : (
+          <ListGroup>
+            {projects.map(p => (
+              <ListGroup.Item
+                key={p._id}
+                action
+                onClick={() => handleProjectClick(p)}
+                className="d-flex justify-content-between align-items-center"
+              >
+                <div>
+                  <strong>{p.title}</strong>
+                  <div className="text-muted" style={{ fontSize: '0.9em' }}>
+                    {p.category?.join(', ') || 'No Category'}
+                  </div>
+                </div>
+                <small className="text-muted">
+                  {p.start_date ? new Date(p.start_date).toLocaleDateString() : 'No Date'}
+                </small>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
+
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton><Modal.Title>Create Project</Modal.Title></Modal.Header>
@@ -101,6 +134,15 @@ const ProjectsTab = ({ user }) => {
               <Form.Label>Title</Form.Label>
               <Form.Control value={title} onChange={e => setTitle(e.target.value)} />
             </Form.Group>
+            <Form.Group className="mb-3">
+            <Form.Label>Category</Form.Label>
+            <Form.Control placeholder="e.g., Web, SaaS" value={category} onChange={e => setCategory(e.target.value)} />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Start Date</Form.Label>
+            <Form.Control type="date" value={startDate} onChange={e => setStartDate(e.target.value)} />
+          </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control as="textarea" value={description} onChange={e => setDescription(e.target.value)} />
