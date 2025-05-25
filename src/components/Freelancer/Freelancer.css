@@ -223,8 +223,16 @@
   text-decoration: none !important; 
   font-size: small;
   cursor: pointer;
+  padding-left: 1em;
 }
 
+.btn-primary
+{
+  font-weight: 100 !important;
+    padding: 10px 10px !important;
+    border-radius: 0 !important;
+    transition: none !important;
+}
 .custom-section {
   /* background: #1c1c1c; dark background */
   padding: 60px 0;

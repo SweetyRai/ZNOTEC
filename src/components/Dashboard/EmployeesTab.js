@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, ListGroup, Modal, Form, Card, Row, Col } from 'react-bootstrap';
+import { Button, ListGroup, Modal, Form, Card, Row, Col, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 const EmployeesTab = ({ user }) => {
+  const [isEditing, setIsEditing] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState('');
@@ -9,23 +10,30 @@ const EmployeesTab = ({ user }) => {
   const [position, setPosition] = useState('');
   const [skills, setSkill] = useState('');
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-
+  const [viewMode, setViewMode] = useState('all');
 
   const API_URL = process.env.REACT_APP_API_URL;
 
   const fetchEmployees = async () => {
-    const res = await fetch(API_URL + `/private/api/employees/${user._id}`);
-    const data = await res.json();
-    setEmployees(data);
-  };
+    try {
+      const url = viewMode === 'all'
+        ? `${API_URL}/private/api/employees/all`
+        : `${API_URL}/private/api/employees/${user._id}`;
 
+      const res = await fetch(url);
+      const data = await res.json();
+      setEmployees(data);
+    } catch (err) {
+      console.error('Error fetching employees:', err);
+    }
+  };
 
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [viewMode]);
 
   const handleSubmit = async () => {
-    await fetch(API_URL + `/private/api/employees`, {
+    await fetch(`${API_URL}/private/api/employees`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, position, skills, b2bId: user._id })
@@ -36,14 +44,13 @@ const EmployeesTab = ({ user }) => {
   };
 
   const handleUpdate = async () => {
-    console.log('emp id->', selectedEmployee._id);
-    
-    await fetch(API_URL + `/private/api/employees/${selectedEmployee._id}`, {
+    await fetch(`${API_URL}/private/api/employees/${selectedEmployee._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, position, skills })
     });
     setSelectedEmployee(null);
+    setIsEditing(false);
     resetForm();
     fetchEmployees();
   };
@@ -56,8 +63,6 @@ const EmployeesTab = ({ user }) => {
   };
 
   const handleEmployeeClick = (employee) => {
-    console.log('emp->', employee);
-    
     setSelectedEmployee(employee);
     setName(employee.name);
     setEmail(employee.email);
@@ -72,21 +77,63 @@ const EmployeesTab = ({ user }) => {
         <Button onClick={() => { resetForm(); setShowModal(true); }}>+ Add Employee</Button>
       </div>
 
+      {!selectedEmployee && (
+        <div className="mb-3 d-flex gap-2 align-items-center">
+          <strong>View:</strong>
+          <ToggleButtonGroup
+            type="radio"
+            name="viewMode"
+            value={viewMode}
+            onChange={val => setViewMode(val)}
+          >
+            <ToggleButton
+              id="view-all"
+              value="all"
+              variant={viewMode === 'all' ? 'primary' : 'outline-primary'}
+            >
+              All Employees
+            </ToggleButton>
+            <ToggleButton
+              id="view-mine"
+              value="mine"
+              variant={viewMode === 'mine' ? 'primary' : 'outline-primary'}
+            >
+              My Employees
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      )}
+
       {selectedEmployee ? (
-        <Card className="p-4 shadow-sm mb-3">
-          <Row>
-            <Col md={6}><Form.Group><Form.Label>Name</Form.Label><Form.Control value={name} onChange={e => setName(e.target.value)} /></Form.Group></Col>
-            <Col md={6}><Form.Group><Form.Label>Email</Form.Label><Form.Control value={email} onChange={e => setEmail(e.target.value)} /></Form.Group></Col>
-          </Row>
-          <Row className="mt-3">
-            <Col md={6}><Form.Group><Form.Label>Position</Form.Label><Form.Control value={position} onChange={e => setPosition(e.target.value)} /></Form.Group></Col>
-            <Col md={6}><Form.Group><Form.Label>Skills</Form.Label><Form.Control value={skills} onChange={e => setSkill(e.target.value)} /></Form.Group></Col>
-          </Row>
-          <div className="text-end mt-3">
-            <Button variant="primary" onClick={handleUpdate}>Save Changes</Button>
-            <Button variant="secondary" className="ms-2" onClick={() => setSelectedEmployee(null)}>Cancel</Button>
-          </div>
-        </Card>
+        <div>
+          <Button variant="link" className="mb-3" onClick={() => {
+            setSelectedEmployee(null);
+            setIsEditing(false);
+          }}>
+            ← Back to Employees
+          </Button>
+
+          <Card className="p-4 shadow-sm mb-3">
+            <Row>
+              <Col md={6}><Form.Group><Form.Label>Name</Form.Label><Form.Control value={name} onChange={e => setName(e.target.value)} disabled={!isEditing} /></Form.Group></Col>
+              <Col md={6}><Form.Group><Form.Label>Email</Form.Label><Form.Control value={email} onChange={e => setEmail(e.target.value)} disabled={!isEditing} /></Form.Group></Col>
+            </Row>
+            <Row className="mt-3">
+              <Col md={6}><Form.Group><Form.Label>Position</Form.Label><Form.Control value={position} onChange={e => setPosition(e.target.value)} disabled={!isEditing} /></Form.Group></Col>
+              <Col md={6}><Form.Group><Form.Label>Skills</Form.Label><Form.Control value={skills} onChange={e => setSkill(e.target.value)} disabled={!isEditing} /></Form.Group></Col>
+            </Row>
+            <div className="text-end mt-4">
+              {isEditing ? (
+                <>
+                  <Button variant="success" onClick={handleUpdate}>Save</Button>
+                  <Button variant="secondary" className="ms-2" onClick={() => setIsEditing(false)}>Cancel</Button>
+                </>
+              ) : (
+                <Button variant="primary" onClick={() => setIsEditing(true)}>Edit</Button>
+              )}
+            </div>
+          </Card>
+        </div>
       ) : (
         <ListGroup>
           {employees.map(e => (
@@ -120,7 +167,7 @@ const EmployeesTab = ({ user }) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={handleSubmit}>Save</Button>
+          <Button variant="primary" onClick={handleSubmit}>Save</Button>
         </Modal.Footer>
       </Modal>
     </div>
